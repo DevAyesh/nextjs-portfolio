@@ -54,8 +54,34 @@ export default function Home() {
       });
     };
 
+    // Handle mobile menu open/close for transparent navbar
+    const navbar = document.querySelector(".custom-navbar");
+    const navbarCollapse = document.querySelector("#navbarNav");
+    
+    const handleMenuToggle = () => {
+      if (navbarCollapse && navbar) {
+        if (navbarCollapse.classList.contains("show")) {
+          navbar.classList.add("menu-open");
+        } else {
+          navbar.classList.remove("menu-open");
+        }
+      }
+    };
+
+    // Listen for Bootstrap collapse events
+    if (navbarCollapse) {
+      navbarCollapse.addEventListener("shown.bs.collapse", handleMenuToggle);
+      navbarCollapse.addEventListener("hidden.bs.collapse", handleMenuToggle);
+    }
+
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (navbarCollapse) {
+        navbarCollapse.removeEventListener("shown.bs.collapse", handleMenuToggle);
+        navbarCollapse.removeEventListener("hidden.bs.collapse", handleMenuToggle);
+      }
+    };
   }, []);
 
   useEffect(() => {
