@@ -143,6 +143,17 @@ a {
   width: 100%;
 }
 
+/* ========== HAMBURGER MENU ========== */
+.navbar-toggler,
+.navbar-toggler:focus,
+.navbar-toggler:active {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  padding: 0.25rem 0.5rem;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
 /* Mobile Navbar Optimization */
 @media (max-width: 991px) {
   .custom-navbar {
@@ -169,39 +180,59 @@ a {
   }
 
   .navbar-collapse {
-    background: rgba(5, 5, 10, 0.3);
+    background: rgba(0, 0, 0, 0.9);
+    /* Black and transparent look */
     backdrop-filter: blur(15px);
-    margin-top: 0.5rem;
-    border-radius: 8px;
-    padding: 0.5rem 0;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    transition: all 0.3s ease;
+    margin-top: 1rem;
+    border-radius: 12px;
+    padding: 1rem 0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+
+    position: absolute;
+    top: 100%;
+    right: 1rem;
+    /* Align right */
+    left: auto;
+    /* Allow it to shrink */
+    width: 260px;
+    /* Small width */
+    z-index: 1000;
   }
 
-  /* More transparent when menu is open */
   .navbar-collapse.show {
-    background: rgba(5, 5, 10, 0.25);
-    backdrop-filter: blur(20px);
+    background: rgba(0, 0, 0, 0.9);
   }
 
-  /* Make navbar more transparent when menu is open */
-  .custom-navbar.menu-open {
-    background: rgba(5, 5, 10, 0.3) !important;
+  .navbar-nav {
+    align-items: center;
+    /* Center items */
+    gap: 0.5rem;
   }
 
-  .custom-navbar.menu-open.scrolled {
-    background: rgba(5, 5, 10, 0.45) !important;
+  .navbar-nav .nav-link {
+    font-size: 1.1rem;
+    /* Larger font */
+    font-weight: 600;
+    color: #ffffff !important;
+    /* White text */
+    padding: 0.8rem 0;
+    /* More spacing */
+    width: 100%;
+    text-align: center;
+  }
+
+  .navbar-nav .nav-link:hover,
+  .navbar-nav .nav-link.active {
+    color: #FFB343 !important;
+    /* Keep highlight color */
+    background: rgba(255, 255, 255, 0.03);
+    /* Subtle hover bg */
   }
 
   /* Smaller toggler on mobile */
   .navbar-toggler {
-    padding: 0.25rem 0.55rem;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-  }
-
-  .navbar-toggler-icon {
-    width: 1.1em;
-    height: 1.1em;
+    padding: 0.25rem 0.5rem;
   }
 }
 
@@ -224,12 +255,19 @@ a {
     padding: 0.45rem 0.9rem;
   }
 
-  .navbar-collapse {
-    background: rgba(5, 5, 10, 0.25);
+  .navbar-nav .nav-link {
+    font-size: 1rem;
+    padding: 0.6rem 0;
   }
 
   .navbar-toggler {
     padding: 0.2rem 0.45rem;
+  }
+
+  .hamburger-wrapper {
+    transform: scale(0.8);
+    /* Make it smaller on mobile */
+    display: inline-block;
   }
 }
 
@@ -329,10 +367,14 @@ a {
 }
 
 @keyframes caretBlink {
-  0%, 50% {
+
+  0%,
+  50% {
     opacity: 1;
   }
-  50.01%, 100% {
+
+  50.01%,
+  100% {
     opacity: 0;
   }
 }
@@ -688,10 +730,12 @@ a {
     transform: translateY(0px) translateX(0px) rotate(0deg) scale(1);
     opacity: 0.28;
   }
+
   50% {
     transform: translateY(-16px) translateX(8px) rotate(3deg) scale(1.07);
     opacity: 0.38;
   }
+
   100% {
     transform: translateY(0px) translateX(0px) rotate(0deg) scale(1);
     opacity: 0.28;

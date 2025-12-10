@@ -5,6 +5,7 @@ import Image from "next/image";
 import Script from "next/script";
 import { FaHtml5, FaCss3Alt, FaReact, FaBootstrap, FaNodeJs, FaPython, FaPhp, FaLaravel, FaVuejs, FaJava, FaDatabase, FaGitAlt, FaDocker, FaCode, FaMicrochip, FaServer, FaTools, FaAws, FaFigma, FaLinux, FaGithub, FaRobot, FaGlobe, FaCloud } from "react-icons/fa";
 import { IoLogoIonic, IoLogoJavascript } from "react-icons/io";
+import { Squash as Hamburger } from 'hamburger-react';
 import { SiTailwindcss, SiNextdotjs, SiTypescript, SiExpress, SiFlask, SiDjango, SiMongodb, SiPostman, SiFramer, SiMui, SiPostgresql, SiTensorflow, SiPandas, SiNumpy, SiScikitlearn, SiOpencv, SiSpringboot, SiFirebase, SiFastapi, SiMysql, SiPytorch, SiJupyter } from "react-icons/si";
 import { FaAndroid } from "react-icons/fa";
 
@@ -12,6 +13,7 @@ export default function Home() {
   const [activeSection, setActiveSection] = useState("home");
   const [scrolled, setScrolled] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const roles = useMemo(
     () => ["Software Engineer", "Full Stack Developer", "AI Enthusiast", "DevOps Learner"],
     []
@@ -57,29 +59,34 @@ export default function Home() {
     // Handle mobile menu open/close for transparent navbar
     const navbar = document.querySelector(".custom-navbar");
     const navbarCollapse = document.querySelector("#navbarNav");
-    
-    const handleMenuToggle = () => {
-      if (navbarCollapse && navbar) {
-        if (navbarCollapse.classList.contains("show")) {
-          navbar.classList.add("menu-open");
-        } else {
-          navbar.classList.remove("menu-open");
-        }
-      }
+
+    const handleShow = () => {
+      if (navbar) navbar.classList.add("menu-open");
+      setIsMenuOpen(true);
     };
 
-    // Listen for Bootstrap collapse events
+    const handleHide = () => {
+      if (navbar) navbar.classList.remove("menu-open");
+      setIsMenuOpen(false);
+    };
+
+    // Listen for Bootstrap collapse events - Use show/hide for immediate response
     if (navbarCollapse) {
-      navbarCollapse.addEventListener("shown.bs.collapse", handleMenuToggle);
-      navbarCollapse.addEventListener("hidden.bs.collapse", handleMenuToggle);
+      navbarCollapse.addEventListener("show.bs.collapse", handleShow);
+      navbarCollapse.addEventListener("hide.bs.collapse", handleHide);
+
+      // Check initial state
+      if (navbarCollapse.classList.contains("show")) {
+        setIsMenuOpen(true);
+      }
     }
 
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
       if (navbarCollapse) {
-        navbarCollapse.removeEventListener("shown.bs.collapse", handleMenuToggle);
-        navbarCollapse.removeEventListener("hidden.bs.collapse", handleMenuToggle);
+        navbarCollapse.removeEventListener("show.bs.collapse", handleShow);
+        navbarCollapse.removeEventListener("hide.bs.collapse", handleHide);
       }
     };
   }, []);
@@ -209,6 +216,12 @@ export default function Home() {
       const targetPosition = element.offsetTop - navbarHeight;
       window.scrollTo({ top: targetPosition, behavior: "smooth" });
       setActiveSection(id.replace('#', ''));
+
+      // Close mobile menu if open
+      const navbarCollapse = document.querySelector("#navbarNav");
+      if (navbarCollapse && navbarCollapse.classList.contains("show")) {
+        document.querySelector(".navbar-toggler")?.click();
+      }
     }
   };
 
@@ -228,8 +241,25 @@ export default function Home() {
       <nav className={`navbar navbar-expand-lg navbar-dark fixed-top custom-navbar ${scrolled ? 'scrolled' : ''}`}>
         <div className="container">
           <a className="navbar-brand text-white" href="#home" onClick={(e) => scrollToSection(e, '#home')}>Ayesh Madhuranga</a>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span className="navbar-toggler-icon"></span>
+          <button
+            className={`navbar-toggler border-0 p-0 ${isMenuOpen ? 'open' : ''}`}
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded={isMenuOpen}
+            aria-label="Toggle navigation"
+          >
+            <div className="hamburger-wrapper" style={{ pointerEvents: 'none' }}>
+              <Hamburger
+                toggled={isMenuOpen}
+                size={24}
+                color="#ffffff"
+                rounded
+                duration={0.6}
+                easing="ease-in-out"
+              />
+            </div>
           </button>
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto">
