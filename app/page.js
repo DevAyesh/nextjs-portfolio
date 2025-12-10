@@ -345,7 +345,7 @@ export default function Home() {
                   <div className="education-item">
                     <div className="education-dot"></div>
                     <div className="education-content">
-                      <div className="education-period">2024 - Present</div>
+                      <div className="education-period">2022 - Present</div>
                       <h4 className="education-title">BSc (Hons) in Information Technology</h4>
                       <div className="education-institution">HORIZON Campus</div>
                       <p className="education-description">
