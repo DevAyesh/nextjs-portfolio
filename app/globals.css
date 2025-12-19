@@ -809,8 +809,8 @@ a {
   transform: translateY(-2px);
 }
 
-/* Horizontal Traveling Icons */
-.traveling-icons {
+/* Roaming Background Icons */
+.roaming-icons {
   position: absolute;
   top: 0;
   left: 0;
@@ -821,90 +821,189 @@ a {
   z-index: 0;
 }
 
-.travel-icon {
+.roam-icon {
   position: absolute;
-  font-size: 2.5rem;
-  color: rgba(0, 0, 0, 0.15);
-  opacity: 0.15;
-  animation: travelLeftToRight 15s linear infinite;
+  font-size: 3rem;
+  color: rgba(255, 179, 67, 0.08);
+  opacity: 0;
+  filter: drop-shadow(0 0 5px rgba(255, 179, 67, 0.2));
+  will-change: transform, opacity;
 }
 
-/* Horizontal travel animation */
-@keyframes travelLeftToRight {
+/* Define 5 different complex roaming paths */
+.roam-path-1 {
+  animation: roam1 25s ease-in-out infinite;
+  top: 10%;
+  left: 10%;
+}
+
+.roam-path-2 {
+  animation: roam2 28s ease-in-out infinite;
+  top: 20%;
+  right: 10%;
+}
+
+.roam-path-3 {
+  animation: roam3 32s ease-in-out infinite;
+  top: 60%;
+  left: 15%;
+}
+
+.roam-path-4 {
+  animation: roam4 22s ease-in-out infinite;
+  bottom: 15%;
+  right: 20%;
+}
+
+.roam-path-5 {
+  animation: roam5 30s ease-in-out infinite;
+  top: 40%;
+  left: 50%;
+}
+
+/* Add delays for randomness */
+.roam-delay-1 {
+  animation-delay: 0s;
+}
+
+.roam-delay-2 {
+  animation-delay: -5s;
+}
+
+.roam-delay-3 {
+  animation-delay: -10s;
+}
+
+.roam-delay-4 {
+  animation-delay: -15s;
+}
+
+@keyframes roam1 {
   0% {
-    left: -100px;
+    transform: translate(0, 0) rotate(0deg);
     opacity: 0;
   }
 
-  10% {
+  20% {
     opacity: 0.15;
   }
 
-  90% {
+  50% {
+    transform: translate(150px, 100px) rotate(180deg);
+    opacity: 0.1;
+  }
+
+  80% {
     opacity: 0.15;
   }
 
   100% {
-    left: calc(100% + 100px);
+    transform: translate(0, 0) rotate(360deg);
     opacity: 0;
   }
 }
 
-/* Distribute icons vertically */
-.travel-icon:nth-child(1) {
-  top: 15%;
+@keyframes roam2 {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 0.12;
+  }
+
+  50% {
+    transform: translate(-100px, 150px) rotate(-120deg);
+    opacity: 0.08;
+  }
+
+  80% {
+    opacity: 0.12;
+  }
+
+  100% {
+    transform: translate(0, 0) rotate(-360deg);
+    opacity: 0;
+  }
 }
 
-.travel-icon:nth-child(2) {
-  top: 25%;
+@keyframes roam3 {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 0.15;
+  }
+
+  50% {
+    transform: translate(80px, -120px) scale(1.2);
+    opacity: 0.1;
+  }
+
+  75% {
+    opacity: 0.15;
+  }
+
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0;
+  }
 }
 
-.travel-icon:nth-child(3) {
-  top: 35%;
+@keyframes roam4 {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 0.18;
+  }
+
+  40% {
+    transform: translate(-150px, -50px) rotate(90deg);
+  }
+
+  60% {
+    transform: translate(-50px, -150px) rotate(180deg);
+  }
+
+  80% {
+    opacity: 0.18;
+  }
+
+  100% {
+    transform: translate(0, 0) rotate(360deg);
+    opacity: 0;
+  }
 }
 
-.travel-icon:nth-child(4) {
-  top: 45%;
-}
+@keyframes roam5 {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg) scale(0.8);
+    opacity: 0;
+  }
 
-.travel-icon:nth-child(5) {
-  top: 55%;
-}
+  25% {
+    opacity: 0.1;
+  }
 
-.travel-icon:nth-child(6) {
-  top: 65%;
-}
+  50% {
+    transform: translate(-50%, -50%) rotate(180deg) scale(1.2);
+    opacity: 0.05;
+  }
 
-.travel-icon:nth-child(7) {
-  top: 75%;
-}
+  75% {
+    opacity: 0.1;
+  }
 
-.travel-icon:nth-child(8) {
-  top: 85%;
-}
-
-.travel-icon:nth-child(9) {
-  top: 20%;
-}
-
-.travel-icon:nth-child(10) {
-  top: 30%;
-}
-
-.travel-icon:nth-child(11) {
-  top: 40%;
-}
-
-.travel-icon:nth-child(12) {
-  top: 50%;
-}
-
-.travel-icon:nth-child(13) {
-  top: 60%;
-}
-
-.travel-icon:nth-child(14) {
-  top: 80%;
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg) scale(0.8);
+    opacity: 0;
+  }
 }
 
 
