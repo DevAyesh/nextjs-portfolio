@@ -438,22 +438,23 @@ export default function Home() {
       {/* Skills Section */}
       <section id="skills" className="section-padding bg-dark-section">
         <div className="container position-relative">
-          {/* Horizontal Traveling Icons */}
-          <div className="traveling-icons">
-            <FaReact className="travel-icon" style={{ animationDelay: '0s' }} />
-            <SiNextdotjs className="travel-icon" style={{ animationDelay: '2s' }} />
-            <IoLogoJavascript className="travel-icon" style={{ animationDelay: '4s' }} />
-            <FaHtml5 className="travel-icon" style={{ animationDelay: '6s' }} />
-            <FaCss3Alt className="travel-icon" style={{ animationDelay: '8s' }} />
-            <FaNodeJs className="travel-icon" style={{ animationDelay: '1s' }} />
-            <SiExpress className="travel-icon" style={{ animationDelay: '3s' }} />
-            <SiMongodb className="travel-icon" style={{ animationDelay: '5s' }} />
-            <FaDatabase className="travel-icon" style={{ animationDelay: '7s' }} />
-            <FaJava className="travel-icon" style={{ animationDelay: '9s' }} />
-            <FaPython className="travel-icon" style={{ animationDelay: '1.5s' }} />
-            <FaDocker className="travel-icon" style={{ animationDelay: '3.5s' }} />
-            <FaGithub className="travel-icon" style={{ animationDelay: '5.5s' }} />
-            <FaAws className="travel-icon" style={{ animationDelay: '7.5s' }} />
+          {/* Roaming Background Icons */}
+          <div className="roaming-icons">
+            <FaReact className="roam-icon roam-path-1 roam-delay-1" />
+            <SiNextdotjs className="roam-icon roam-path-2 roam-delay-2" />
+            <IoLogoJavascript className="roam-icon roam-path-3 roam-delay-1" />
+            <FaHtml5 className="roam-icon roam-path-4 roam-delay-3" />
+            <FaCss3Alt className="roam-icon roam-path-5 roam-delay-2" />
+            <FaNodeJs className="roam-icon roam-path-1 roam-delay-3" />
+            <SiExpress className="roam-icon roam-path-2 roam-delay-1" />
+            <SiMongodb className="roam-icon roam-path-3 roam-delay-4" />
+            <FaDatabase className="roam-icon roam-path-4 roam-delay-1" />
+            <FaJava className="roam-icon roam-path-5 roam-delay-3" />
+            <FaPython className="roam-icon roam-path-1 roam-delay-2" />
+            <FaDocker className="roam-icon roam-path-2 roam-delay-4" />
+            <FaGithub className="roam-icon roam-path-3 roam-delay-2" />
+            <FaAws className="roam-icon roam-path-4 roam-delay-2" />
+            <SiTensorflow className="roam-icon roam-path-5 roam-delay-1" />
           </div>
 
           <h2 className="display-5 fw-bold text-white mb-5 text-center" style={{ position: 'relative', zIndex: 2 }}>Tech Stack</h2>
