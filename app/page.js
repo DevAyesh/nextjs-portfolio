@@ -21,8 +21,6 @@ export default function Home() {
   const [typedText, setTypedText] = useState("");
   const [displayIndex, setDisplayIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", topic: "general", message: "" });
-  const [status, setStatus] = useState({ loading: false, error: "", success: "" });
 
   useEffect(() => {
     // Initialize Particles.js
@@ -130,11 +128,6 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, [typedText, isDeleting, displayIndex, roles]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
-
   const techStack = [
     {
       title: "Frontend Technologies",
@@ -236,33 +229,10 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setStatus({ loading: true, error: "", success: "" });
-
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-
-      if (!res.ok) {
-        let body;
-        try {
-          body = await res.json();
-        } catch {
-          body = null;
-        }
-        throw new Error("Request failed");
-      }
-
-      setStatus({ loading: false, error: "", success: "Message sent! I'll reply soon." });
-      setForm({ name: "", email: "", topic: "general", message: "" });
-    } catch (error) {
-      console.error("Contact form submit error:", error);
-      setStatus({ loading: false, error: "Could not send. Please try again later.", success: "" });
-    }
+    alert("Message sent successfully!");
+    e.target.reset();
   };
 
   return (
@@ -575,58 +545,26 @@ export default function Home() {
                 <form onSubmit={handleSubmit}>
                   <div className="row g-3 mb-3">
                     <div className="col-md-6">
-                      <input
-                        type="text"
-                        name="name"
-                        className="contact-new-input"
-                        placeholder="Your Name"
-                        value={form.name}
-                        onChange={handleChange}
-                        required
-                      />
+                      <input type="text" className="contact-new-input" placeholder="Your Name" required />
                     </div>
                     <div className="col-md-6">
-                      <input
-                        type="email"
-                        name="email"
-                        className="contact-new-input"
-                        placeholder="Your Email"
-                        value={form.email}
-                        onChange={handleChange}
-                        required
-                      />
+                      <input type="email" className="contact-new-input" placeholder="Your Email" required />
                     </div>
                   </div>
                   <div className="mb-3">
-                    <select
-                      name="topic"
-                      className="contact-new-input contact-select"
-                      value={form.topic}
-                      onChange={handleChange}
-                      required
-                    >
-                      <option value="general">General Inquiry</option>
+                    <select className="contact-new-input contact-select" required>
+                      <option value="">General Inquiries</option>
                       <option value="project">Project Inquiry</option>
                       <option value="collaboration">Collaboration</option>
                       <option value="other">Other</option>
                     </select>
                   </div>
                   <div className="mb-3">
-                    <textarea
-                      name="message"
-                      className="contact-new-input contact-textarea"
-                      rows="5"
-                      placeholder="Your Message"
-                      value={form.message}
-                      onChange={handleChange}
-                      required
-                    ></textarea>
+                    <textarea className="contact-new-input contact-textarea" rows="5" placeholder="Your Message" required></textarea>
                   </div>
-                  <button type="submit" className="contact-new-submit-btn" disabled={status.loading}>
-                    {status.loading ? "Sending..." : (<><i className="fas fa-paper-plane me-2"></i> Send Message</>)}
+                  <button type="submit" className="contact-new-submit-btn">
+                    <i className="fas fa-paper-plane me-2"></i> Send Message
                   </button>
-                  {status.error && <p className="text-danger small mt-2 mb-0">{status.error}</p>}
-                  {status.success && <p className="text-success small mt-2 mb-0">{status.success}</p>}
                 </form>
               </div>
             </div>

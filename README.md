@@ -44,16 +44,27 @@ Single-page portfolio built with Next.js App Router, React 19, and Framer Motion
 2) Run dev server: `npm run dev`
 3) Edit the landing page at `app/page.js`; adjust styles in `app/page.module.css` or globals in `app/globals.css`.
 
-## Contact form email (SMTP)
+## Contact form email (Gmail SMTP)
 Create `.env.local` with:
 ```
-SMTP_HOST=your_smtp_host
+SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
-SMTP_USER=your_smtp_username
-SMTP_PASS=your_smtp_password
-CONTACT_TO=destination_email@example.com
+SMTP_USER=your_email@gmail.com
+SMTP_PASS=your_16_char_app_password
+CONTACT_TO=your_email@gmail.com
 ```
+
+**Setup Gmail App Password:**
+1. Enable 2-Step Verification on your Google Account
+2. Go to: Google Account → Security → 2-Step Verification → App passwords
+3. Generate an app password for "Mail"
+4. Use the 16-character password as `SMTP_PASS`
+
+**Important:** Use the app password, NOT your regular Gmail password.
+
 Restart the dev server after changing env vars.
+
+**For Vercel deployment:** Add all 5 variables as Environment Variables in Project Settings → Redeploy.
 
 ## Deployment
 Standard Next.js static/server deployment. For Vercel, push the repo and import the project; default settings work out of the box.
