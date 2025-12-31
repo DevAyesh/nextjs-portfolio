@@ -21,6 +21,8 @@ export default function Home() {
   const [typedText, setTypedText] = useState("");
   const [displayIndex, setDisplayIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [form, setForm] = useState({ name: "", email: "", topic: "general", message: "" });
+  const [status, setStatus] = useState({ loading: false, error: "", success: "" });
 
   useEffect(() => {
     // Initialize Particles.js
@@ -128,6 +130,11 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, [typedText, isDeleting, displayIndex, roles]);
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
   const techStack = [
     {
       title: "Frontend Technologies",
@@ -229,10 +236,33 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert("Message sent successfully!");
-    e.target.reset();
+    setStatus({ loading: true, error: "", success: "" });
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      if (!res.ok) {
+        let body;
+        try {
+          body = await res.json();
+        } catch {
+          body = null;
+        }
+        throw new Error("Request failed");
+      }
+
+      setStatus({ loading: false, error: "", success: "Message sent! I'll reply soon." });
+      setForm({ name: "", email: "", topic: "general", message: "" });
+    } catch (error) {
+      console.error("Contact form submit error:", error);
+      setStatus({ loading: false, error: "Could not send. Please try again later.", success: "" });
+    }
   };
 
   return (
@@ -285,11 +315,11 @@ export default function Home() {
 
         {/* Social Sidebar (Desktop) */}
         <div className="social-links position-absolute start-0 top-50 translate-middle-y d-none d-lg-flex flex-column gap-4 ms-5">
-          <a href="#" className="social-icon fs-4"><i className="fab fa-github"></i></a>
-          <a href="#" className="social-icon fs-4"><i className="fab fa-instagram"></i></a>
-          <a href="#" className="social-icon fs-4"><i className="fab fa-linkedin"></i></a>
-          <a href="#" className="social-icon fs-4"><i className="fab fa-facebook"></i></a>
-          <a href="#" className="social-icon fs-4"><i className="fab fa-youtube"></i></a>
+          <a href="https://github.com/DevAyesh" className="social-icon fs-4" target="_blank" rel="noopener noreferrer"><i className="fab fa-github"></i></a>
+          <a href="https://www.linkedin.com/in/ayesh-madhuranga-nawarathna-4b2a33217" className="social-icon fs-4" target="_blank" rel="noopener noreferrer"><i className="fab fa-linkedin"></i></a>
+          <a href="https://medium.com/@amnlkk2001" className="social-icon fs-4" target="_blank" rel="noopener noreferrer"><i className="fab fa-medium-m"></i></a>
+          <a href="https://stackoverflow.com" className="social-icon fs-4" target="_blank" rel="noopener noreferrer"><i className="fab fa-stack-overflow"></i></a>
+          <a href="https://instagram.com" className="social-icon fs-4" target="_blank" rel="noopener noreferrer"><i className="fab fa-instagram"></i></a>
         </div>
 
         <div className="container">
@@ -316,10 +346,11 @@ export default function Home() {
 
                 {/* Mobile Social */}
                 <div className="d-flex gap-4 mt-4 justify-content-center d-lg-none">
-                  <a href="#" className="social-icon fs-4"><i className="fab fa-github"></i></a>
-                  <a href="#" className="social-icon fs-4"><i className="fab fa-instagram"></i></a>
-                  <a href="#" className="social-icon fs-4"><i className="fab fa-linkedin"></i></a>
-                  <a href="#" className="social-icon fs-4"><i className="fab fa-facebook"></i></a>
+                  <a href="https://github.com/DevAyesh" className="social-icon fs-4" target="_blank" rel="noopener noreferrer"><i className="fab fa-github"></i></a>
+                  <a href="https://www.linkedin.com/in/ayesh-madhuranga-nawarathna-4b2a33217" className="social-icon fs-4" target="_blank" rel="noopener noreferrer"><i className="fab fa-linkedin"></i></a>
+                  <a href="https://medium.com/@amnlkk2001" className="social-icon fs-4" target="_blank" rel="noopener noreferrer"><i className="fab fa-medium-m"></i></a>
+                  <a href="https://stackoverflow.com" className="social-icon fs-4" target="_blank" rel="noopener noreferrer"><i className="fab fa-stack-overflow"></i></a>
+                  <a href="https://instagram.com" className="social-icon fs-4" target="_blank" rel="noopener noreferrer"><i className="fab fa-instagram"></i></a>
                 </div>
               </div>
             </div>
@@ -544,26 +575,58 @@ export default function Home() {
                 <form onSubmit={handleSubmit}>
                   <div className="row g-3 mb-3">
                     <div className="col-md-6">
-                      <input type="text" className="contact-new-input" placeholder="Your Name" required />
+                      <input
+                        type="text"
+                        name="name"
+                        className="contact-new-input"
+                        placeholder="Your Name"
+                        value={form.name}
+                        onChange={handleChange}
+                        required
+                      />
                     </div>
                     <div className="col-md-6">
-                      <input type="email" className="contact-new-input" placeholder="Your Email" required />
+                      <input
+                        type="email"
+                        name="email"
+                        className="contact-new-input"
+                        placeholder="Your Email"
+                        value={form.email}
+                        onChange={handleChange}
+                        required
+                      />
                     </div>
                   </div>
                   <div className="mb-3">
-                    <select className="contact-new-input contact-select" required>
-                      <option value="">General Inquiries</option>
+                    <select
+                      name="topic"
+                      className="contact-new-input contact-select"
+                      value={form.topic}
+                      onChange={handleChange}
+                      required
+                    >
+                      <option value="general">General Inquiry</option>
                       <option value="project">Project Inquiry</option>
                       <option value="collaboration">Collaboration</option>
                       <option value="other">Other</option>
                     </select>
                   </div>
                   <div className="mb-3">
-                    <textarea className="contact-new-input contact-textarea" rows="5" placeholder="Your Message" required></textarea>
+                    <textarea
+                      name="message"
+                      className="contact-new-input contact-textarea"
+                      rows="5"
+                      placeholder="Your Message"
+                      value={form.message}
+                      onChange={handleChange}
+                      required
+                    ></textarea>
                   </div>
-                  <button type="submit" className="contact-new-submit-btn">
-                    <i className="fas fa-paper-plane me-2"></i> Send Message
+                  <button type="submit" className="contact-new-submit-btn" disabled={status.loading}>
+                    {status.loading ? "Sending..." : (<><i className="fas fa-paper-plane me-2"></i> Send Message</>)}
                   </button>
+                  {status.error && <p className="text-danger small mt-2 mb-0">{status.error}</p>}
+                  {status.success && <p className="text-success small mt-2 mb-0">{status.success}</p>}
                 </form>
               </div>
             </div>
@@ -576,10 +639,10 @@ export default function Home() {
 
                 <div className="flex-grow-1">
                   {[
-                    { icon: "fa-github", iconBrand: "fab", title: "GitHub", val: "github.com/ayeshmadhuranga" },
-                    { icon: "fa-linkedin", iconBrand: "fab", title: "LinkedIn", val: "linkedin.com/in/ayeshmadhuranga" },
-                    { icon: "fa-envelope", iconBrand: "fas", title: "Email", val: "ayesh@example.com" },
-                    { icon: "fa-phone", iconBrand: "fas", title: "Phone", val: "+94 77 123 4567" }
+                    { icon: "fa-github", iconBrand: "fab", title: "GitHub", val: "DevAyesh", href: "https://github.com/DevAyesh" },
+                    { icon: "fa-linkedin", iconBrand: "fab", title: "LinkedIn", val: "Ayesh Madhuranga", href: "https://www.linkedin.com/in/ayesh-madhuranga-nawarathna-4b2a33217" },
+                    { icon: "fa-envelope", iconBrand: "fas", title: "Email", val: "ayeshmaduranga2001@gmail.com", href: "mailto:ayeshmaduranga2001@gmail.com" },
+                    { icon: "fa-phone", iconBrand: "fas", title: "Phone", val: "+94 77 123 4567", href: "tel:+94771234567" }
                   ].map((item, idx) => (
                     <div key={idx} className="contact-info-item">
                       <div className="contact-info-icon">
@@ -587,7 +650,20 @@ export default function Home() {
                       </div>
                       <div>
                         <h5 className="contact-info-title">{item.title}</h5>
-                        <p className="contact-info-value">{item.val}</p>
+                        <p className="contact-info-value">
+                          {item.href ? (
+                            <a
+                              href={item.href}
+                              className="text-decoration-none text-light"
+                              target={item.href.startsWith("http") ? "_blank" : undefined}
+                              rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                            >
+                              {item.val}
+                            </a>
+                          ) : (
+                            item.val
+                          )}
+                        </p>
                       </div>
                     </div>
                   ))}
