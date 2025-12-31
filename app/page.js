@@ -21,6 +21,8 @@ export default function Home() {
   const [typedText, setTypedText] = useState("");
   const [displayIndex, setDisplayIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [form, setForm] = useState({ name: "", email: "", topic: "general", message: "" });
+  const [status, setStatus] = useState({ loading: false, error: "", success: "" });
 
   useEffect(() => {
     // Initialize Particles.js
@@ -229,10 +231,43 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert("Message sent successfully!");
-    e.target.reset();
+    setStatus({ loading: true, error: "", success: "" });
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || "Failed to send message");
+      }
+
+      setStatus({ loading: false, error: "", success: "✓  Message sent! I'll get back to you soon!" });
+      setForm({ name: "", email: "", topic: "general", message: "" });
+      
+      // Auto-dismiss success message after 3 seconds
+      setTimeout(() => {
+        setStatus({ loading: false, error: "", success: "" });
+      }, 3000);
+    } catch (error) {
+      console.error("Contact form error:", error);
+      setStatus({ loading: false, error: error.message || "Could not send message. Please try again.", success: "" });
+      
+      // Auto-dismiss error message after 5 seconds
+      setTimeout(() => {
+        setStatus({ loading: false, error: "", success: "" });
+      }, 5000);
+    }
   };
 
   return (
@@ -545,26 +580,74 @@ export default function Home() {
                 <form onSubmit={handleSubmit}>
                   <div className="row g-3 mb-3">
                     <div className="col-md-6">
-                      <input type="text" className="contact-new-input" placeholder="Your Name" required />
+                      <input 
+                        type="text" 
+                        name="name"
+                        className="contact-new-input" 
+                        placeholder="Your Name" 
+                        value={form.name}
+                        onChange={handleChange}
+                        required 
+                      />
                     </div>
                     <div className="col-md-6">
-                      <input type="email" className="contact-new-input" placeholder="Your Email" required />
+                      <input 
+                        type="email" 
+                        name="email"
+                        className="contact-new-input" 
+                        placeholder="Your Email" 
+                        value={form.email}
+                        onChange={handleChange}
+                        required 
+                      />
                     </div>
                   </div>
                   <div className="mb-3">
-                    <select className="contact-new-input contact-select" required>
-                      <option value="">General Inquiries</option>
+                    <select 
+                      name="topic"
+                      className="contact-new-input contact-select" 
+                      value={form.topic}
+                      onChange={handleChange}
+                      required
+                    >
+                      <option value="general">General Inquiries</option>
                       <option value="project">Project Inquiry</option>
                       <option value="collaboration">Collaboration</option>
                       <option value="other">Other</option>
                     </select>
                   </div>
                   <div className="mb-3">
-                    <textarea className="contact-new-input contact-textarea" rows="5" placeholder="Your Message" required></textarea>
+                    <textarea 
+                      name="message"
+                      className="contact-new-input contact-textarea" 
+                      rows="5" 
+                      placeholder="Your Message" 
+                      value={form.message}
+                      onChange={handleChange}
+                      required
+                    ></textarea>
                   </div>
-                  <button type="submit" className="contact-new-submit-btn">
-                    <i className="fas fa-paper-plane me-2"></i> Send Message
+                  <button type="submit" className="contact-new-submit-btn" disabled={status.loading}>
+                    {status.loading ? (
+                      <>
+                        <i className="fas fa-spinner fa-spin me-2"></i> Sending...
+                      </>
+                    ) : (
+                      <>
+                        <i className="fas fa-paper-plane me-2"></i> Send Message
+                      </>
+                    )}
                   </button>
+                  {status.error && (
+                    <p className="contact-simple-message error-text">
+                      {status.error}
+                    </p>
+                  )}
+                  {status.success && (
+                    <p className="contact-simple-message success-text">
+                      {status.success}
+                    </p>
+                  )}
                 </form>
               </div>
             </div>

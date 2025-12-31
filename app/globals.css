@@ -1764,6 +1764,40 @@ a {
   box-shadow: 0 4px 12px rgba(255, 179, 67, 0.3);
 }
 
+.contact-new-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* ========== SIMPLE STATUS MESSAGES ========== */
+.contact-simple-message {
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 100;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 0.3px;
+  animation: fadeIn 0.3s ease-out;
+  transition: opacity 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.contact-simple-message.success-text {
+  color: #34d399;
+}
+
+.contact-simple-message.error-text {
+  color: #dc2626;
+}
+
 .contact-info-section {
   color: #fff;
 }
