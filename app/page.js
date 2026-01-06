@@ -8,6 +8,7 @@ import { IoLogoIonic, IoLogoJavascript } from "react-icons/io";
 import { Squash as Hamburger } from 'hamburger-react';
 import { SiTailwindcss, SiNextdotjs, SiTypescript, SiExpress, SiFlask, SiDjango, SiMongodb, SiPostman, SiFramer, SiMui, SiPostgresql, SiTensorflow, SiPandas, SiNumpy, SiScikitlearn, SiOpencv, SiSpringboot, SiFirebase, SiFastapi, SiMysql, SiPytorch, SiJupyter } from "react-icons/si";
 import { FaAndroid } from "react-icons/fa";
+import VariableProximity from './components/VariableProximity';
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState("home");
@@ -23,6 +24,12 @@ export default function Home() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", topic: "general", message: "" });
   const [status, setStatus] = useState({ loading: false, error: "", success: "" });
+
+  // Refs for VariableProximity sections
+  const aboutRef = useMemo(() => ({ current: null }), []);
+  const skillsRef = useMemo(() => ({ current: null }), []);
+  const projectsRef = useMemo(() => ({ current: null }), []);
+  const contactRef = useMemo(() => ({ current: null }), []);
 
   useEffect(() => {
     // Initialize Particles.js
@@ -254,15 +261,15 @@ export default function Home() {
 
       setStatus({ loading: false, error: "", success: "✓  Message sent! I'll get back to you soon!" });
       setForm({ name: "", email: "", topic: "general", message: "" });
-      
-      // Auto-dismiss success message after 3 seconds
+
+      // Auto-dismiss success message after 5 seconds
       setTimeout(() => {
         setStatus({ loading: false, error: "", success: "" });
-      }, 3000);
+      }, 5000);
     } catch (error) {
       console.error("Contact form error:", error);
       setStatus({ loading: false, error: error.message || "Could not send message. Please try again.", success: "" });
-      
+
       // Auto-dismiss error message after 5 seconds
       setTimeout(() => {
         setStatus({ loading: false, error: "", success: "" });
@@ -375,9 +382,18 @@ export default function Home() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="section-padding bg-secondary-section">
+      <section id="about" className="section-padding bg-secondary-section" ref={el => aboutRef.current = el}>
         <div className="container">
-          <h2 className="display-5 fw-bold text-white mb-5 text-center">About Me</h2>
+          <h2 className="display-5 fw-bold text-white mb-5 text-center">
+            <VariableProximity
+              label="About Me"
+              fromFontVariationSettings="'wght' 300, 'opsz' 8"
+              toFontVariationSettings="'wght' 900, 'opsz' 72"
+              containerRef={aboutRef}
+              radius={200}
+              falloff="exponential"
+            />
+          </h2>
 
           <div className="row g-4 align-items-center">
             {/* Left Column - Profile Image */}
@@ -472,7 +488,7 @@ export default function Home() {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="section-padding bg-dark-section">
+      <section id="skills" className="section-padding bg-dark-section" ref={el => skillsRef.current = el}>
         <div className="container position-relative">
           {/* Roaming Background Icons */}
           <div className="roaming-icons">
@@ -493,7 +509,16 @@ export default function Home() {
             <SiTensorflow className="roam-icon roam-path-5 roam-delay-1" />
           </div>
 
-          <h2 className="display-5 fw-bold text-white mb-5 text-center" style={{ position: 'relative', zIndex: 2 }}>Tech Stack</h2>
+          <h2 className="display-5 fw-bold text-white mb-5 text-center" style={{ position: 'relative', zIndex: 2 }}>
+            <VariableProximity
+              label="Tech Stack"
+              fromFontVariationSettings="'wght' 300, 'opsz' 8"
+              toFontVariationSettings="'wght' 900, 'opsz' 72"
+              containerRef={skillsRef}
+              radius={200}
+              falloff="exponential"
+            />
+          </h2>
 
           <div className="stack-bg-icons">
             {bgIcons.map(({ icon: Icon, style }, idx) => (
@@ -523,29 +548,71 @@ export default function Home() {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="section-padding bg-secondary-section">
+      <section id="projects" className="section-padding bg-secondary-section" ref={el => projectsRef.current = el}>
         <div className="container">
-          <h2 className="display-5 fw-bold text-white mb-5 text-center">My Projects</h2>
+          <h2 className="display-5 fw-bold text-white mb-5 text-center">
+            <VariableProximity
+              label="My Projects"
+              fromFontVariationSettings="'wght' 300, 'opsz' 8"
+              toFontVariationSettings="'wght' 900, 'opsz' 72"
+              containerRef={projectsRef}
+              radius={200}
+              falloff="exponential"
+            />
+          </h2>
           <div className="row g-4">
             {[
-              { img: "/images/project1.png", title: "AI Dockerfile Optimizer", desc: "AI-powered research document generator that creates comprehensive research papers using advanced AI models. Features intelligent citation management and automated formatting.", icons: ['FaPython', 'FaDocker', 'FaRobot'] },
-              { img: "/images/project2.png", title: "FinanceMe DevOps", desc: "Modern grocery store web application with a clean and responsive UI. Built with efficient state management using Redux, featuring real-time inventory updates.", icons: ['FaAws', 'FaDocker', 'FaServer'] },
-              { img: "/images/project3.png", title: "Personal Portfolio", desc: "Modern responsive portfolio website showcasing projects and skills with smooth animations and interactive UI elements.", icons: ['FaReact', 'FaBootstrap', 'FaCode'] },
-              { img: "/images/project4.png", title: "Smart Parking", desc: "IoT-based parking management system with real-time monitoring and automated slot allocation for efficient parking solutions.", icons: ['FaPython', 'FaMicrochip', 'FaServer'] },
-              { img: "/images/project5.png", title: "Job Tracker", desc: "Application management system to track interviews, manage job applications, and organize the entire job search process efficiently.", icons: ['FaReact', 'FaNodeJs', 'FaDatabase'] },
-              { img: "/images/project6.png", title: "Pro Website", desc: "Professional services website with modern design, optimized performance, and seamless user experience across all devices.", icons: ['FaHtml5', 'FaCss3Alt', 'FaCode'] }
+              { img: "/images/project1.png", title: "AppStruct - AI-Powered Blueprint Generator", desc: "A full-stack web application that transforms app ideas into detailed architectural blueprints using Google Gemini AI, featuring real-time streaming, user authentication, and a modern glassmorphism UI built with React and TailwindCSS.", icons: ['FaReact', 'FaRobot', 'FaNodeJs'], github: "https://github.com/DevAyesh/AppStruct", liveDemo: "https://app-struct.vercel.app/" },
+              { img: "/images/project2.png", images: ["/images/project2.png", "/images/project2_detail.png"], title: "Contact Management API", desc: "A RESTful API built with Node.js and Express for managing personal contacts securely. The application features JWT-based authentication with bcrypt password hashing, allowing users to register, login, and perform full CRUD operations on their private contact lists stored in MongoDB.", icons: ['FaNodeJs', 'SiExpress', 'SiMongodb'], github: "https://github.com/DevAyesh/contact-backend", liveDemo: null },
+              { img: "/images/project3.png", title: "Personal Portfolio Website", desc: "Modern responsive portfolio website showcasing projects and skills with smooth animations and interactive UI elements. Built with Next.js and React featuring dynamic content, glassmorphism design, and optimized performance.", icons: ['SiNextdotjs', 'FaReact', 'FaCode'], github: "https://github.com/DevAyesh/nextjs-portfolio", liveDemo: "https://portfolio-six-sand-83.vercel.app" },
+              { img: "/images/project4.png", images: ["/images/project4.png", "/images/project4_detail1.png", "/images/project4_detail2.png"], title: "Vegetable Marketplace - Android App", desc: "A complete Android marketplace app connecting vegetable sellers directly with buyers. Features multi-role authentication, product listings, search/filter, shopping cart, PayHere payment integration, and order tracking. Built with Java and Firebase to support UN Sustainable Development Goals by improving market access for small vendors.", icons: ['FaJava', 'FaAndroid', 'SiFirebase'], github: "https://github.com/AkilaShashimantha/Mobile-App-Development", liveDemo: null },
+              { img: "/images/project5.png", title: "Job Tracker", desc: "Application management system to track interviews, manage job applications, and organize the entire job search process efficiently.", icons: ['FaReact', 'FaNodeJs', 'FaDatabase'], github: "#", liveDemo: "#" },
+              { img: "/images/project6.png", title: "Pro Website", desc: "Professional services website with modern design, optimized performance, and seamless user experience across all devices.", icons: ['FaHtml5', 'FaCss3Alt', 'FaCode'], github: "#", liveDemo: "#" }
             ].map((project, idx) => (
               <div key={idx} className="col-md-6 col-lg-4">
                 <div className="project-card">
                   <div className="project-image-wrapper">
-                    <img src={project.img} alt={project.title} className="project-preview-img" />
+                    {project.images && project.images.length > 1 ? (
+                      <div id={`carousel-${idx}`} className="carousel slide" data-bs-ride="carousel">
+                        <div className="carousel-indicators">
+                          {project.images.map((_, imgIdx) => (
+                            <button
+                              key={imgIdx}
+                              type="button"
+                              data-bs-target={`#carousel-${idx}`}
+                              data-bs-slide-to={imgIdx}
+                              className={imgIdx === 0 ? "active" : ""}
+                              aria-current={imgIdx === 0 ? "true" : "false"}
+                              aria-label={`Slide ${imgIdx + 1}`}
+                            ></button>
+                          ))}
+                        </div>
+                        <div className="carousel-inner">
+                          {project.images.map((image, imgIdx) => (
+                            <div key={imgIdx} className={`carousel-item ${imgIdx === 0 ? "active" : ""}`}>
+                              <img src={image} alt={`${project.title} - ${imgIdx + 1}`} className="project-preview-img d-block w-100" />
+                            </div>
+                          ))}
+                        </div>
+                        <button className="carousel-control-prev" type="button" data-bs-target={`#carousel-${idx}`} data-bs-slide="prev">
+                          <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                          <span className="visually-hidden">Previous</span>
+                        </button>
+                        <button className="carousel-control-next" type="button" data-bs-target={`#carousel-${idx}`} data-bs-slide="next">
+                          <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                          <span className="visually-hidden">Next</span>
+                        </button>
+                      </div>
+                    ) : (
+                      <img src={project.img} alt={project.title} className="project-preview-img" />
+                    )}
                   </div>
                   <div className="project-content">
                     <div className="d-flex justify-content-between align-items-start mb-2">
                       <h3 className="project-title">{project.title}</h3>
                       <div className="project-tech-icons">
                         {project.icons.map((icon, i) => {
-                          const IconMap = { FaPython, FaDocker, FaRobot, FaAws, FaServer, FaReact, FaBootstrap, FaCode, FaMicrochip, FaNodeJs, FaDatabase, FaHtml5, FaCss3Alt };
+                          const IconMap = { FaPython, FaDocker, FaRobot, FaAws, FaServer, FaReact, FaBootstrap, FaCode, FaMicrochip, FaNodeJs, FaDatabase, FaHtml5, FaCss3Alt, SiMongodb, SiExpress, SiNextdotjs, FaJava, FaAndroid, SiFirebase };
                           const Icon = IconMap[icon];
                           return Icon ? <Icon key={i} /> : null;
                         })}
@@ -553,10 +620,12 @@ export default function Home() {
                     </div>
                     <p className="project-description">{project.desc}</p>
                     <div className="project-links">
-                      <a href="#" className="project-link">
-                        <i className="fas fa-external-link-alt"></i> Live Demo
-                      </a>
-                      <a href="#" className="project-link">
+                      {project.liveDemo && (
+                        <a href={project.liveDemo} className="project-link" target="_blank" rel="noopener noreferrer">
+                          <i className="fas fa-external-link-alt"></i> Live Demo
+                        </a>
+                      )}
+                      <a href={project.github} className="project-link" target="_blank" rel="noopener noreferrer">
                         <i className="fab fa-github"></i> GitHub
                       </a>
                     </div>
@@ -569,9 +638,18 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="contact-section">
+      <section id="contact" className="contact-section" ref={el => contactRef.current = el}>
         <div className="container">
-          <h2 className="contact-main-title">Let&apos;s Connect</h2>
+          <h2 className="contact-main-title">
+            <VariableProximity
+              label="Let's Connect"
+              fromFontVariationSettings="'wght' 300, 'opsz' 8"
+              toFontVariationSettings="'wght' 900, 'opsz' 72"
+              containerRef={contactRef}
+              radius={200}
+              falloff="exponential"
+            />
+          </h2>
 
           <div className="row g-3">
             {/* Left Card - Send Message Form */}
@@ -580,32 +658,32 @@ export default function Home() {
                 <form onSubmit={handleSubmit}>
                   <div className="row g-3 mb-3">
                     <div className="col-md-6">
-                      <input 
-                        type="text" 
+                      <input
+                        type="text"
                         name="name"
-                        className="contact-new-input" 
-                        placeholder="Your Name" 
+                        className="contact-new-input"
+                        placeholder="Your Name"
                         value={form.name}
                         onChange={handleChange}
-                        required 
+                        required
                       />
                     </div>
                     <div className="col-md-6">
-                      <input 
-                        type="email" 
+                      <input
+                        type="email"
                         name="email"
-                        className="contact-new-input" 
-                        placeholder="Your Email" 
+                        className="contact-new-input"
+                        placeholder="Your Email"
                         value={form.email}
                         onChange={handleChange}
-                        required 
+                        required
                       />
                     </div>
                   </div>
                   <div className="mb-3">
-                    <select 
+                    <select
                       name="topic"
-                      className="contact-new-input contact-select" 
+                      className="contact-new-input contact-select"
                       value={form.topic}
                       onChange={handleChange}
                       required
@@ -617,11 +695,11 @@ export default function Home() {
                     </select>
                   </div>
                   <div className="mb-3">
-                    <textarea 
+                    <textarea
                       name="message"
-                      className="contact-new-input contact-textarea" 
-                      rows="5" 
-                      placeholder="Your Message" 
+                      className="contact-new-input contact-textarea"
+                      rows="5"
+                      placeholder="Your Message"
                       value={form.message}
                       onChange={handleChange}
                       required
