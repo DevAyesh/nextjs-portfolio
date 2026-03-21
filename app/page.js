@@ -9,6 +9,7 @@ import { Squash as Hamburger } from 'hamburger-react';
 import { SiTailwindcss, SiNextdotjs, SiTypescript, SiExpress, SiFlask, SiDjango, SiMongodb, SiPostman, SiFramer, SiMui, SiPostgresql, SiTensorflow, SiPandas, SiNumpy, SiScikitlearn, SiOpencv, SiSpringboot, SiFirebase, SiFastapi, SiMysql, SiPytorch, SiJupyter } from "react-icons/si";
 import { FaAndroid } from "react-icons/fa";
 import VariableProximity from './components/VariableProximity';
+import TechStack from './components/TechStack';
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState("home");
@@ -520,65 +521,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Skills Section */}
-      <section id="skills" className="section-padding bg-dark-section" ref={el => skillsRef.current = el}>
-        <div className="container position-relative">
-          {/* Roaming Background Icons */}
-          <div className="roaming-icons">
-            <FaReact className="roam-icon roam-path-1 roam-delay-1" />
-            <SiNextdotjs className="roam-icon roam-path-2 roam-delay-2" />
-            <IoLogoJavascript className="roam-icon roam-path-3 roam-delay-1" />
-            <FaHtml5 className="roam-icon roam-path-4 roam-delay-3" />
-            <FaCss3Alt className="roam-icon roam-path-5 roam-delay-2" />
-            <FaNodeJs className="roam-icon roam-path-1 roam-delay-3" />
-            <SiExpress className="roam-icon roam-path-2 roam-delay-1" />
-            <SiMongodb className="roam-icon roam-path-3 roam-delay-4" />
-            <FaDatabase className="roam-icon roam-path-4 roam-delay-1" />
-            <FaJava className="roam-icon roam-path-5 roam-delay-3" />
-            <FaPython className="roam-icon roam-path-1 roam-delay-2" />
-            <FaDocker className="roam-icon roam-path-2 roam-delay-4" />
-            <FaGithub className="roam-icon roam-path-3 roam-delay-2" />
-            <FaAws className="roam-icon roam-path-4 roam-delay-2" />
-            <SiTensorflow className="roam-icon roam-path-5 roam-delay-1" />
-          </div>
-
-          <h2 className="display-5 fw-bold text-white mb-5 text-center reveal from-bottom" style={{ position: 'relative', zIndex: 2 }}>
-            <VariableProximity
-              label="Tech Stack"
-              fromFontVariationSettings="'wght' 300, 'opsz' 8"
-              toFontVariationSettings="'wght' 900, 'opsz' 72"
-              containerRef={skillsRef}
-              radius={200}
-              falloff="exponential"
-            />
-          </h2>
-
-          <div className="stack-bg-icons">
-            {bgIcons.map(({ icon: Icon, style }, idx) => (
-              <Icon key={idx} className="stack-bg-icon" style={style} />
-            ))}
-          </div>
-
-          <div className="tech-stack-list">
-            {techStack.map((category, catIdx) => (
-              <div className="stack-row reveal from-bottom" key={category.title} style={{ transitionDelay: `${catIdx * 0.08}s` }}>
-                <div className="stack-row-header">
-                  <category.icon className="stack-row-icon" />
-                  <h3 className="stack-row-title">{category.title}</h3>
-                </div>
-                <div className="stack-pill-grid">
-                  {category.items.map((item, itemIdx) => (
-                    <div className="stack-pill reveal zoom" key={item.label} style={{ transitionDelay: `${(catIdx * 0.06) + (itemIdx * 0.04)}s` }}>
-                      <item.icon className="stack-pill-icon" />
-                      <span className="stack-pill-label">{item.label}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Skills Section - handled by TechStack component */}
+      <TechStack skillsRef={skillsRef} />
 
       {/* Projects Section */}
       <section id="projects" className="section-padding bg-secondary-section" ref={el => projectsRef.current = el}>
