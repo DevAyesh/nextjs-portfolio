@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import Script from "next/script";
 import { FaHtml5, FaCss3Alt, FaReact, FaBootstrap, FaNodeJs, FaPython, FaPhp, FaLaravel, FaVuejs, FaJava, FaDatabase, FaGitAlt, FaDocker, FaCode, FaMicrochip, FaServer, FaTools, FaAws, FaFigma, FaLinux, FaGithub, FaRobot, FaGlobe, FaCloud } from "react-icons/fa";
@@ -30,6 +30,39 @@ export default function Home() {
   const skillsRef = useMemo(() => ({ current: null }), []);
   const projectsRef = useMemo(() => ({ current: null }), []);
   const contactRef = useMemo(() => ({ current: null }), []);
+
+  // ---- Scroll Reveal Hook (re-animates on every scroll) ----
+  const observerRef = useRef(null);
+
+  const setupScrollAnimations = useCallback(() => {
+    const targets = document.querySelectorAll('.reveal');
+    if (observerRef.current) observerRef.current.disconnect();
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Animate in when element enters viewport
+            entry.target.classList.add('visible');
+          } else {
+            // Reset so it can animate again next time it scrolls into view
+            entry.target.classList.remove('visible');
+          }
+        });
+      },
+      { threshold: 0.10, rootMargin: '0px 0px -30px 0px' }
+    );
+    targets.forEach((el) => observerRef.current.observe(el));
+  }, []);
+
+  useEffect(() => {
+    // Small delay to let React render first
+    const t = setTimeout(setupScrollAnimations, 100);
+    return () => {
+      clearTimeout(t);
+      observerRef.current?.disconnect();
+    };
+  }, [setupScrollAnimations]);
+  // ---- End Scroll Reveal ----
 
   useEffect(() => {
     // Initialize Particles.js
@@ -384,7 +417,7 @@ export default function Home() {
       {/* About Section */}
       <section id="about" className="section-padding bg-secondary-section" ref={el => aboutRef.current = el}>
         <div className="container">
-          <h2 className="display-5 fw-bold text-white mb-5 text-center">
+          <h2 className="display-5 fw-bold text-white mb-5 text-center reveal from-bottom">
             <VariableProximity
               label="About Me"
               fromFontVariationSettings="'wght' 300, 'opsz' 8"
@@ -397,7 +430,7 @@ export default function Home() {
 
           <div className="row g-4 align-items-center">
             {/* Left Column - Profile Image */}
-            <div className="col-lg-4">
+            <div className="col-lg-4 reveal from-left">
               <div className="about-profile-card">
                 <img
                   src="/images/profile.png"
@@ -408,7 +441,7 @@ export default function Home() {
             </div>
 
             {/* Right Column - Content */}
-            <div className="col-lg-8">
+            <div className="col-lg-8 reveal from-right reveal-delay-1">
               {/* About Me Description */}
               <div className="about-content-card mb-4">
                 <p className="about-description">
@@ -417,7 +450,7 @@ export default function Home() {
               </div>
 
               {/* Academic Background */}
-              <div className="about-section-block mb-4">
+              <div className="about-section-block mb-4 reveal from-bottom reveal-delay-2">
                 <h3 className="about-section-title">
                   <i className="fas fa-graduation-cap me-2"></i>
                   Academic Background
@@ -461,7 +494,7 @@ export default function Home() {
               </div>
 
               {/* Work Process */}
-              <div className="about-section-block">
+              <div className="about-section-block reveal from-bottom reveal-delay-3">
                 <h3 className="about-section-title">Work Process</h3>
                 <div className="work-process-grid">
                   <div className="work-process-item">
@@ -509,7 +542,7 @@ export default function Home() {
             <SiTensorflow className="roam-icon roam-path-5 roam-delay-1" />
           </div>
 
-          <h2 className="display-5 fw-bold text-white mb-5 text-center" style={{ position: 'relative', zIndex: 2 }}>
+          <h2 className="display-5 fw-bold text-white mb-5 text-center reveal from-bottom" style={{ position: 'relative', zIndex: 2 }}>
             <VariableProximity
               label="Tech Stack"
               fromFontVariationSettings="'wght' 300, 'opsz' 8"
@@ -527,15 +560,15 @@ export default function Home() {
           </div>
 
           <div className="tech-stack-list">
-            {techStack.map((category) => (
-              <div className="stack-row" key={category.title}>
+            {techStack.map((category, catIdx) => (
+              <div className="stack-row reveal from-bottom" key={category.title} style={{ transitionDelay: `${catIdx * 0.08}s` }}>
                 <div className="stack-row-header">
                   <category.icon className="stack-row-icon" />
                   <h3 className="stack-row-title">{category.title}</h3>
                 </div>
                 <div className="stack-pill-grid">
-                  {category.items.map((item) => (
-                    <div className="stack-pill" key={item.label}>
+                  {category.items.map((item, itemIdx) => (
+                    <div className="stack-pill reveal zoom" key={item.label} style={{ transitionDelay: `${(catIdx * 0.06) + (itemIdx * 0.04)}s` }}>
                       <item.icon className="stack-pill-icon" />
                       <span className="stack-pill-label">{item.label}</span>
                     </div>
@@ -550,7 +583,7 @@ export default function Home() {
       {/* Projects Section */}
       <section id="projects" className="section-padding bg-secondary-section" ref={el => projectsRef.current = el}>
         <div className="container">
-          <h2 className="display-5 fw-bold text-white mb-5 text-center">
+          <h2 className="display-5 fw-bold text-white mb-5 text-center reveal from-bottom">
             <VariableProximity
               label="My Projects"
               fromFontVariationSettings="'wght' 300, 'opsz' 8"
@@ -567,9 +600,9 @@ export default function Home() {
               { img: "/images/project3.png", title: "Personal Portfolio Website", desc: "Modern responsive portfolio website showcasing projects and skills with smooth animations and interactive UI elements. Built with Next.js and React featuring dynamic content, glassmorphism design, and optimized performance.", icons: ['SiNextdotjs', 'FaReact', 'FaCode'], github: "https://github.com/DevAyesh/nextjs-portfolio", liveDemo: "https://portfolio-six-sand-83.vercel.app" },
               { img: "/images/project4.png", images: ["/images/project4.png", "/images/project4_detail1.png", "/images/project4_detail2.png"], title: "Vegetable Marketplace - Android App", desc: "A complete Android marketplace app connecting vegetable sellers directly with buyers. Features multi-role authentication, product listings, search/filter, shopping cart, PayHere payment integration, and order tracking. Built with Java and Firebase to support UN Sustainable Development Goals by improving market access for small vendors.", icons: ['FaJava', 'FaAndroid', 'SiFirebase'], github: "https://github.com/AkilaShashimantha/Mobile-App-Development", liveDemo: null },
               { img: "/images/project7.png", images: ["/images/project7.png", "/images/project7_detail.png"], title: "Credit Risk Prediction Model", desc: "A machine learning application that predicts loan default risk using customer financial data. Built with Python and XGBoost, achieving 92% accuracy with advanced gradient boosting algorithms. Features an interactive web interface for real-time risk assessment, model performance analytics, and comprehensive data visualization.", icons: ['FaPython', 'FaRobot', 'SiPandas'], github: "https://github.com/DevAyesh/nextjs-portfolio.git", liveDemo: null },
-              { img: "/images/project6.png", title: "Pro Website", desc: "Professional services website with modern design, optimized performance, and seamless user experience across all devices.", icons: ['FaHtml5', 'FaCss3Alt', 'FaCode'], github: "#", liveDemo: "#" }
+              { img: "/images/project6_aws_arch.png", images: ["/images/project6_aws_arch.png", "/images/project6_aws_dashboard.png", "/images/project6_aws_cloudwatch.png"], title: "SmartInventory – AWS Cloud Deployment", desc: "Designed and deployed an inventory management web application on AWS using a multi-tier architecture. Built a VPC with public and private subnets, hosted the web server on EC2 with Apache, deployed MySQL on RDS in a private subnet, integrated S3 for static assets, and configured an Application Load Balancer for traffic management. Monitored performance via CloudWatch.", icons: ['FaAws', 'FaServer', 'FaDatabase'], github: "#", liveDemo: null }
             ].map((project, idx) => (
-              <div key={idx} className="col-md-6 col-lg-4">
+              <div key={idx} className={`col-md-6 col-lg-4 reveal from-bottom reveal-delay-${(idx % 3) + 1}`}>
                 <div className="project-card">
                   <div className="project-image-wrapper">
                     {project.images && project.images.length > 1 ? (
@@ -640,7 +673,7 @@ export default function Home() {
       {/* Contact Section */}
       <section id="contact" className="contact-section" ref={el => contactRef.current = el}>
         <div className="container">
-          <h2 className="contact-main-title">
+          <h2 className="contact-main-title reveal from-bottom">
             <VariableProximity
               label="Let's Connect"
               fromFontVariationSettings="'wght' 300, 'opsz' 8"
@@ -653,7 +686,7 @@ export default function Home() {
 
           <div className="row g-3">
             {/* Left Card - Send Message Form */}
-            <div className="col-lg-6">
+            <div className="col-lg-6 reveal from-left reveal-delay-1">
               <div className="contact-form-card">
                 <form onSubmit={handleSubmit}>
                   <div className="row g-3 mb-3">
@@ -731,7 +764,7 @@ export default function Home() {
             </div>
 
             {/* Right Card - Connect With Me */}
-            <div className="col-lg-6">
+            <div className="col-lg-6 reveal from-right reveal-delay-2">
               <div className="contact-glass-card d-flex flex-column h-100">
                 <h3 className="contact-card-title mb-2">Connect with me</h3>
                 <p className="contact-card-subtitle mb-4">You can also reach out to me directly through these channels.</p>
@@ -778,7 +811,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="py-4 bg-secondary-section text-center border-top border-secondary">
+      <footer className="py-4 bg-secondary-section text-center border-top border-secondary reveal from-bottom">
         <div className="container">
           <p className="mb-0 text-light text-opacity-50 small">© 2025 Ayesh Madhuranga. All Rights Reserved.</p>
         </div>
