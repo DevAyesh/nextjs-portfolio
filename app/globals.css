@@ -809,6 +809,240 @@ a {
   transform: translateY(-2px);
 }
 
+/* ========== TECH STACK 2026 — NEW COMPONENT STYLES ========== */
+
+/* Section wrapper — enables spotlight positioning */
+.ts-section {
+  position: relative;
+  overflow: hidden;
+  background-color: #030303;
+}
+
+/* Mouse-follow spotlight overlay using highly performant transform */
+.ts-spotlight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 800px;
+  height: 800px;
+  margin-top: -400px; /* Center the spotlight div */
+  margin-left: -400px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+  pointer-events: none;
+  z-index: 1;
+  will-change: transform;
+  border-radius: 50%;
+  transform: translate3d(-9999px, -9999px, 0); /* hide initially */
+}
+
+/* 25-second Circular Floating Animation */
+@keyframes liquid-float-1 {
+  0%   { transform: translate(0, 0) scale(1); }
+  25%  { transform: translate(15vw, 10vh) scale(1.05); }
+  50%  { transform: translate(5vw, 25vh) scale(1); }
+  75%  { transform: translate(-10vw, 15vh) scale(0.95); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+@keyframes liquid-float-2 {
+  0%   { transform: translate(0, 0) scale(1); }
+  25%  { transform: translate(-15vw, -5vh) scale(1.05); }
+  50%  { transform: translate(-25vw, -15vh) scale(1); }
+  75%  { transform: translate(-5vw, -25vh) scale(0.95); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+@keyframes liquid-float-3 {
+  0%   { transform: translate(0, 0) scale(1); }
+  25%  { transform: translate(10vw, -15vh) scale(0.95); }
+  50%  { transform: translate(25vw, 0vh) scale(1.05); }
+  75%  { transform: translate(5vw, 15vh) scale(1); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+
+/* Blob 1: Gold, 40% width, top-left */
+.ts-liquid-gold {
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 40vw;
+  height: 40vw;
+  background-color: #FFD700;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.07;
+  z-index: 0;
+  pointer-events: none;
+  animation: liquid-float-1 25s linear infinite;
+  will-change: transform;
+}
+
+/* Blob 2: Deep Indigo, 50% width, bottom-right */
+.ts-liquid-indigo {
+  position: absolute;
+  bottom: -20%;
+  right: -10%;
+  width: 50vw;
+  height: 50vw;
+  background-color: #4B0082;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.08;
+  z-index: 0;
+  pointer-events: none;
+  animation: liquid-float-2 30s linear infinite reverse;
+  will-change: transform;
+}
+
+/* Blob 3: Subtle White, 30% width, center */
+.ts-liquid-white {
+  position: absolute;
+  top: 30%;
+  left: 35%;
+  width: 30vw;
+  height: 30vw;
+  background-color: #FFFFFF;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.03;
+  z-index: 0;
+  pointer-events: none;
+  animation: liquid-float-3 28s linear infinite;
+  will-change: transform;
+}
+
+/* Metallic gradient heading */
+.ts-heading {
+  background: linear-gradient(135deg, #c0c0c0 0%, #ffffff 40%, #a8a8a8 60%, #e8e8e8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
+  width: 100%;
+}
+
+/* Category list container */
+.ts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+/* Category row */
+.ts-row {
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.ts-row:last-child {
+  border-bottom: none;
+}
+
+/* Row header */
+.ts-row-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  justify-content: center;
+  margin-bottom: 0.9rem;
+}
+
+.ts-row-icon {
+  color: #FFB343;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.ts-row-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.02em;
+}
+
+/* Pill grid */
+.ts-pill-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: center;
+}
+
+/* Glassmorphic pill */
+.ts-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  color: rgba(235, 235, 235, 0.9);
+  font-size: 0.85rem;
+  font-weight: 500;
+  min-width: 110px;
+  justify-content: center;
+  cursor: default;
+  position: relative;
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.25s ease,
+              border-color 0.25s ease,
+              background 0.25s ease;
+  will-change: transform, box-shadow;
+}
+
+.ts-pill:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: #ffffff;
+}
+
+/* Pill label */
+.ts-pill-label {
+  white-space: nowrap;
+}
+
+/* Active pulsing dot — shown next to React, Next.js, Django, Docker */
+.ts-active-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4ade80;
+  margin-left: 2px;
+  flex-shrink: 0;
+  animation: ts-pulse 2s ease-in-out infinite;
+  box-shadow: 0 0 6px #4ade80aa;
+}
+
+@keyframes ts-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.65);
+  }
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+  .ts-pill {
+    min-width: 90px;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .ts-pill-grid {
+    gap: 0.45rem;
+  }
+}
+
 /* Roaming Background Icons */
 .roaming-icons {
   position: absolute;
