@@ -65,6 +65,65 @@ export default function Home() {
   }, [setupScrollAnimations]);
   // ---- End Scroll Reveal ----
 
+  // ---- Anime.js Hero Timeline (cinematic entrance) ----
+  useEffect(() => {
+    import('animejs').then(({ createTimeline, stagger }) => {
+      const tl = createTimeline({
+        defaults: { ease: 'out(3)', duration: 600 },
+        autoplay: true,
+      });
+      tl
+        .add('.hero-content h3',      { opacity: [0, 1], y: [30, 0] })
+        .add('.hero-content h1',      { opacity: [0, 1], y: [40, 0] }, '-=300')
+        .add('.hero-content h2',      { opacity: [0, 1], y: [30, 0] }, '-=200')
+        .add('.hero-content .lead',   { opacity: [0, 1], y: [20, 0] }, '-=200')
+        .add('.hero-actions',         { opacity: [0, 1], y: [20, 0] }, '-=150')
+        .add('.social-links .social-icon, .d-lg-none .social-icon',
+              { opacity: [0, 1], x: [-20, 0], delay: stagger(60) }, '-=200');
+    }).catch(() => {});
+  }, []);
+  // ---- End Hero Timeline ----
+
+  // ---- Anime.js Project Cards Scroll Stagger (re-animates each scroll) ----
+  useEffect(() => {
+    const cols = document.querySelectorAll('.project-col');
+    if (!cols.length) return;
+
+    const hideAll = () => {
+      cols.forEach(c => {
+        c.style.opacity = '0';
+        c.style.transform = 'translateY(50px) scale(0.96)';
+      });
+    };
+    hideAll();
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          import('animejs').then(({ animate, stagger }) => {
+            animate(cols, {
+              opacity:   [0, 1],
+              y:         [50, 0],
+              scale:     [0.96, 1],
+              delay:     stagger(120),
+              duration:  700,
+              ease:      'out(3)',
+            });
+          }).catch(() => {});
+        } else {
+          // Reset when scrolled out so it re-animates next time
+          hideAll();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    const section = document.querySelector('#projects');
+    if (section) observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+  // ---- End Project Cards Scroll Stagger ----
+
   useEffect(() => {
     // Initialize Particles.js
     if (window.particlesJS) {
@@ -350,6 +409,15 @@ export default function Home() {
                   </a>
                 </li>
               ))}
+              <li className="nav-item d-lg-none mt-4">
+                <a 
+                  href="#contact" 
+                  className="btn nav-mobile-btn" 
+                  onClick={(e) => scrollToSection(e, '#contact')}
+                >
+                  Get In Touch
+                </a>
+              </li>
             </ul>
           </div>
         </div>
@@ -372,16 +440,16 @@ export default function Home() {
           <div className="row align-items-center gy-5">
             <div className="col-lg-6 order-2 order-lg-1">
               <div className="hero-content text-center text-lg-start">
-                <h3 className="text-warning mb-3 h4">Hi There, I&apos;m</h3>
-                <h1 className="display-3 fw-bold text-white mb-3">Ayesh Madhuranga</h1>
-                <h2 className="h3 text-light mb-4 text-opacity-75 hero-role">
+                <h3 className="text-warning mb-3 h4" style={{ opacity: 0 }}>Hi There, I&apos;m</h3>
+                <h1 className="display-3 fw-bold text-white mb-3" style={{ opacity: 0 }}>Ayesh Madhuranga</h1>
+                <h2 className="h3 text-light mb-4 text-opacity-75 hero-role" style={{ opacity: 0 }}>
                   &lt;/<span className="role-rotator">{typedText}</span><span className="role-caret" aria-hidden="true"></span>&gt;
                 </h2>
-                <p className="lead text-light mb-4 text-opacity-75">
+                <p className="lead text-light mb-4 text-opacity-75" style={{ opacity: 0 }}>
                   As a software engineer driven by a passion for innovation, I specialize in designing and delivering unique, cutting-edge solutions.
                 </p>
 
-                <div className="d-flex justify-content-center justify-content-lg-start gap-3 hero-actions">
+                <div className="d-flex justify-content-center justify-content-lg-start gap-3 hero-actions" style={{ opacity: 0 }}>
                   <a href="#contact" className="btn btn-warning" onClick={(e) => scrollToSection(e, '#contact')}>
                     <i className="fas fa-envelope me-2"></i>Get In Touch
                   </a>
@@ -546,7 +614,7 @@ export default function Home() {
               { img: "/images/project7.png", images: ["/images/project7.png", "/images/project7_detail.png"], title: "Credit Risk Prediction Model", desc: "A machine learning application that predicts loan default risk using customer financial data. Built with Python and XGBoost, achieving 92% accuracy with advanced gradient boosting algorithms. Features an interactive web interface for real-time risk assessment, model performance analytics, and comprehensive data visualization.", icons: ['FaPython', 'FaRobot', 'SiPandas'], github: "https://github.com/DevAyesh/nextjs-portfolio.git", liveDemo: null },
               { img: "/images/project6_aws_arch.png", images: ["/images/project6_aws_arch.png", "/images/project6_aws_dashboard.png", "/images/project6_aws_cloudwatch.png"], title: "SmartInventory – AWS Cloud Deployment", desc: "Designed and deployed an inventory management web application on AWS using a multi-tier architecture. Built a VPC with public and private subnets, hosted the web server on EC2 with Apache, deployed MySQL on RDS in a private subnet, integrated S3 for static assets, and configured an Application Load Balancer for traffic management. Monitored performance via CloudWatch.", icons: ['FaAws', 'FaServer', 'FaDatabase'], github: "#", liveDemo: null }
             ].map((project, idx) => (
-              <div key={idx} className={`col-md-6 col-lg-4 reveal from-bottom reveal-delay-${(idx % 3) + 1}`}>
+              <div key={idx} className="col-md-6 col-lg-4 project-col">
                 <div className="project-card">
                   <div className="project-image-wrapper">
                     {project.images && project.images.length > 1 ? (
@@ -755,7 +823,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="py-4 bg-secondary-section text-center border-top border-secondary reveal from-bottom">
+      <footer className="py-4 bg-secondary-section text-center">
         <div className="container">
           <p className="mb-0 text-light text-opacity-50 small">© 2025 Ayesh Madhuranga. All Rights Reserved.</p>
         </div>
