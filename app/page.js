@@ -409,15 +409,7 @@ export default function Home() {
                   </a>
                 </li>
               ))}
-              <li className="nav-item d-lg-none mt-4">
-                <a 
-                  href="#contact" 
-                  className="btn nav-mobile-btn" 
-                  onClick={(e) => scrollToSection(e, '#contact')}
-                >
-                  Get In Touch
-                </a>
-              </li>
+
             </ul>
           </div>
         </div>
