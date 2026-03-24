@@ -180,54 +180,70 @@ a {
   }
 
   .navbar-collapse {
-    background: rgba(0, 0, 0, 0.9);
-    /* Black and transparent look */
+    background: rgba(5, 5, 8, 0.98);
     backdrop-filter: blur(15px);
-    margin-top: 1rem;
-    border-radius: 12px;
-    padding: 1rem 0;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    margin-top: 0;
+    border-radius: 0;
+    padding: 90px 0 40px;
+    border: none;
+    box-shadow: none;
 
-    position: absolute;
-    top: 100%;
-    right: 1rem;
-    /* Align right */
-    left: auto;
-    /* Allow it to shrink */
-    width: 260px;
-    /* Small width */
-    z-index: 1000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    overflow-y: auto;
   }
 
   .navbar-collapse.show {
-    background: rgba(0, 0, 0, 0.9);
+    background: rgba(5, 5, 8, 0.98);
   }
 
   .navbar-nav {
     align-items: center;
-    /* Center items */
-    gap: 0.5rem;
+    justify-content: center;
+    gap: 1.5rem;
+    min-height: calc(100vh - 130px);
   }
 
   .navbar-nav .nav-link {
-    font-size: 1.1rem;
-    /* Larger font */
-    font-weight: 600;
-    color: #ffffff !important;
-    /* White text */
-    padding: 0.8rem 0;
-    /* More spacing */
-    width: 100%;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.5) !important;
+    padding: 0.5rem 0;
+    width: auto;
     text-align: center;
+    letter-spacing: 0.5px;
+    background: transparent !important;
   }
 
   .navbar-nav .nav-link:hover,
   .navbar-nav .nav-link.active {
-    color: #FFB343 !important;
-    /* Keep highlight color */
-    background: rgba(255, 255, 255, 0.03);
-    /* Subtle hover bg */
+    color: #ffffff !important;
+  }
+
+  .navbar-nav .nav-link::after {
+    display: none;
+  }
+
+  .nav-mobile-btn {
+    background-color: #0b0b10;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: #ffffff !important;
+    border-radius: 30px;
+    padding: 14px 40px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-top: 10px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+    transition: all 0.3s ease;
+  }
+
+  .nav-mobile-btn:hover {
+    background-color: #121218;
+    border-color: rgba(255, 255, 255, 0.1);
   }
 
   /* Smaller toggler on mobile */
@@ -248,16 +264,6 @@ a {
 
   .navbar-brand {
     font-size: 1.05rem;
-  }
-
-  .navbar-nav .nav-link {
-    font-size: 0.85rem;
-    padding: 0.45rem 0.9rem;
-  }
-
-  .navbar-nav .nav-link {
-    font-size: 1rem;
-    padding: 0.6rem 0;
   }
 
   .navbar-toggler {

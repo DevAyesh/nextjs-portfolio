@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import {
   FaReact, FaNodeJs, FaDocker, FaGithub, FaCode, FaDatabase, FaServer, FaTools, FaRobot, FaCloud, FaAndroid,
   FaHtml5, FaCss3Alt
@@ -100,21 +99,16 @@ const techStack = [
 ];
 
 // ── Pill component ─────────────────────────────────────────────────────────
-function TechPill({ item, delay }) {
+function TechPill({ item }) {
   const [hovered, setHovered] = useState(false);
   const color = TECH_COLORS[item.label] || "#ffffff";
 
   return (
-    <motion.div
+    <div
       className="ts-pill"
-      initial={{ opacity: 0, y: 20, scale: 0.92 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: true, margin: "-50px" }} // Smoother entry
-      transition={{ duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        // Aurora Lift Interaction: 1px border glow and deeper lift
         boxShadow: hovered 
           ? `0 12px 30px rgba(0,0,0,0.6), inset 0 0 0 1px ${color}99` 
           : "0 4px 12px rgba(0,0,0,0.3), inset 0 0 0 1px rgba(255,255,255,0.03)",
@@ -135,43 +129,24 @@ function TechPill({ item, delay }) {
         }}
       />
       <span className="ts-pill-label">{item.label}</span>
-    </motion.div>
+    </div>
   );
 }
 
 // ── Category Row component ─────────────────────────────────────────────────
-function CategoryRow({ category, catIdx }) {
-  const rowVariants = {
-    hidden:  { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: catIdx * 0.1 },
-    },
-  };
-
+function CategoryRow({ category }) {
   return (
-    <motion.div
-      className="ts-row"
-      variants={rowVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-50px" }}
-    >
+    <div className="ts-row">
       <div className="ts-row-header">
         <category.icon className="ts-row-icon" />
         <h3 className="ts-row-title">{category.title}</h3>
       </div>
       <div className="ts-pill-grid">
-        {category.items.map((item, itemIdx) => (
-          <TechPill
-            key={item.label}
-            item={item}
-            delay={catIdx * 0.08 + itemIdx * 0.05}
-          />
+        {category.items.map((item) => (
+          <TechPill key={item.label} item={item} />
         ))}
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -179,6 +154,7 @@ function CategoryRow({ category, catIdx }) {
 export default function TechStack({ skillsRef }) {
   const sectionRef = useRef(null);
   const spotlightRef = useRef(null);
+  const hasAnimated = useRef(false);
 
   // Soft White Interactive Spotlight Over Everything
   useEffect(() => {
@@ -193,7 +169,6 @@ export default function TechStack({ skillsRef }) {
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
       
-      // Debounce via RAF for zero lag. Using translate3d offloads to GPU.
       if (rafId) cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(() => {
         spotlight.style.transform = `translate3d(${x}px, ${y}px, 0)`;
@@ -215,10 +190,61 @@ export default function TechStack({ skillsRef }) {
     };
   }, []);
 
-  const headingVariants = {
-    hidden:  { opacity: 0, scale: 0.95 },
-    visible: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } },
-  };
+  // ── Anime.js scroll-triggered animation ────────────────────────────────
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const heading = section.querySelector('.ts-heading');
+    const rows = section.querySelectorAll('.ts-row');
+    const pills = section.querySelectorAll('.ts-pill');
+
+    const hideAll = () => {
+      if (heading) {
+        heading.style.opacity = '0';
+        heading.style.transform = 'translateY(30px) scale(0.95)';
+      }
+      rows.forEach(r => {
+        r.style.opacity = '0';
+        r.style.transform = 'translateY(40px)';
+      });
+      pills.forEach(p => {
+        p.style.opacity = '0';
+        p.style.transform = 'translateY(20px) scale(0.92)';
+      });
+    };
+    
+    hideAll(); // Pre-hide initially
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          import('animejs').then(({ animate, stagger, createTimeline }) => {
+            const tl = createTimeline({
+              defaults: { ease: 'out(3)' },
+              autoplay: true,
+            });
+
+            if (heading) {
+              tl.add(heading, { opacity: [0, 1], y: [30, 0], scale: [0.95, 1], duration: 700 });
+            }
+            if (rows.length) {
+              tl.add(rows, { opacity: [0, 1], y: [40, 0], duration: 600, delay: stagger(100) }, '-=400');
+            }
+            if (pills.length) {
+              tl.add(pills, { opacity: [0, 1], y: [20, 0], scale: [0.92, 1], duration: 500, delay: stagger(40) }, '-=300');
+            }
+          }).catch(err => console.warn('animejs load failed', err));
+        } else {
+          hideAll(); // Reset state when scrolling out
+        }
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(section);
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <section
@@ -229,13 +255,6 @@ export default function TechStack({ skillsRef }) {
         if (skillsRef) skillsRef.current = el;
       }}
     >
-      {/* 
-        LIQUID AURORA BACKGROUND ELEMENTS 
-        1. Base color is #030303 (set in globals.css)
-        2. Animated Gold, Indigo & White Blobs 
-        3. Hardware-Accelerated Spotlight
-      */}
-      
       {/* Liquid Gold Blob */}
       <div className="ts-liquid-gold" />
 
@@ -255,13 +274,7 @@ export default function TechStack({ skillsRef }) {
 
       <div className="container position-relative" style={{ zIndex: 3 }}>
         {/* Metallic heading */}
-        <motion.h2
-          className="ts-heading display-5 fw-bold text-center mb-5"
-          variants={headingVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-        >
+        <h2 className="ts-heading display-5 fw-bold text-center mb-5">
           <VariableProximity
             label="Tech Stack"
             fromFontVariationSettings="'wght' 300, 'opsz' 8"
@@ -270,7 +283,7 @@ export default function TechStack({ skillsRef }) {
             radius={200}
             falloff="exponential"
           />
-        </motion.h2>
+        </h2>
 
         {/* Category rows */}
         <div className="ts-list">
