@@ -911,55 +911,41 @@ a {
   100% { transform: translate(0, 0) scale(1); }
 }
 
-/* Blob 1: Gold, 40% width, top-left */
+/* Blob 1: Gold — top-left */
 .ts-liquid-gold {
   position: absolute;
-  top: -10%;
-  left: -10%;
-  width: 40vw;
-  height: 40vw;
+  top: -5%;
+  left: -5%;
+  width: 30vw;
+  height: 30vw;
   background-color: #FFD700;
   border-radius: 50%;
-  filter: blur(120px);
-  opacity: 0.07;
-  z-index: 0;
-  pointer-events: none;
-  animation: liquid-float-1 25s linear infinite;
-  will-change: transform;
-}
-
-/* Blob 2: Deep Indigo, 50% width, bottom-right */
-.ts-liquid-indigo {
-  position: absolute;
-  bottom: -20%;
-  right: -10%;
-  width: 50vw;
-  height: 50vw;
-  background-color: #4B0082;
-  border-radius: 50%;
-  filter: blur(120px);
+  filter: blur(70px);
   opacity: 0.08;
   z-index: 0;
   pointer-events: none;
-  animation: liquid-float-2 30s linear infinite reverse;
-  will-change: transform;
+  animation: liquid-float-1 30s linear infinite;
 }
 
-/* Blob 3: Subtle White, 30% width, center */
-.ts-liquid-white {
+/* Blob 2: Deep Indigo — bottom-right */
+.ts-liquid-indigo {
   position: absolute;
-  top: 30%;
-  left: 35%;
-  width: 30vw;
-  height: 30vw;
-  background-color: #FFFFFF;
+  bottom: -15%;
+  right: -5%;
+  width: 35vw;
+  height: 35vw;
+  background-color: #4B0082;
   border-radius: 50%;
-  filter: blur(120px);
-  opacity: 0.03;
+  filter: blur(70px);
+  opacity: 0.09;
   z-index: 0;
   pointer-events: none;
-  animation: liquid-float-3 28s linear infinite;
-  will-change: transform;
+  animation: liquid-float-2 35s linear infinite reverse;
+}
+
+/* Blob 3 removed — was redundant GPU cost */
+.ts-liquid-white {
+  display: none;
 }
 
 /* Metallic gradient heading */
@@ -1030,9 +1016,7 @@ a {
   padding: 0.5rem 1rem;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   color: rgba(235, 235, 235, 0.9);
   font-size: 0.85rem;
   font-weight: 500;
@@ -1040,16 +1024,33 @@ a {
   justify-content: center;
   cursor: default;
   position: relative;
-  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
-              box-shadow 0.25s ease,
-              border-color 0.25s ease,
-              background 0.25s ease;
-  will-change: transform, box-shadow;
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.22s ease,
+              background 0.22s ease,
+              border-color 0.22s ease;
 }
 
 .ts-pill:hover {
+  transform: translateY(-3px);
   background: rgba(255, 255, 255, 0.07);
+  border-color: color-mix(in srgb, var(--pill-color, #ffffff) 30%, transparent);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4),
+              inset 0 0 0 1px color-mix(in srgb, var(--pill-color, #ffffff) 25%, transparent);
   color: #ffffff;
+}
+
+.ts-pill:hover .ts-pill-icon {
+  filter: grayscale(0%) opacity(1);
+  color: var(--pill-color, #ffffff);
+}
+
+/* Pill icon — greyscale by default, coloured on hover via CSS */
+.ts-pill-icon {
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.55);
+  filter: grayscale(100%) opacity(0.55);
+  transition: filter 0.22s ease, color 0.22s ease;
+  flex-shrink: 0;
 }
 
 /* Pill label */
