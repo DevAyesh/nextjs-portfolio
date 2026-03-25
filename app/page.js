@@ -10,6 +10,7 @@ import { SiTailwindcss, SiNextdotjs, SiTypescript, SiExpress, SiFlask, SiDjango,
 import { FaAndroid } from "react-icons/fa";
 import VariableProximity from './components/VariableProximity';
 import TechStack from './components/TechStack';
+import BlogNavButton from './components/BlogNavButton';
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState("home");
@@ -409,6 +410,9 @@ export default function Home() {
                   </a>
                 </li>
               ))}
+              <li className="nav-item d-flex align-items-center">
+                <BlogNavButton href="https://medium.com/@amnlkk2001" />
+              </li>
 
             </ul>
           </div>
