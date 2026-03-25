@@ -143,6 +143,25 @@ a {
   width: 100%;
 }
 
+/* Blog nav button — outlined pill with fill on hover */
+.blog-nav-btn {
+  color: #FFB343;
+  border: 1px solid #FFB343;
+  border-radius: 20px;
+  padding: 0.25rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-left: 0.8rem;
+  text-decoration: none !important;
+  background: transparent;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.blog-nav-btn:hover {
+  background: #FFB343;
+  color: #05050a;
+}
+
 /* ========== HAMBURGER MENU ========== */
 .navbar-toggler,
 .navbar-toggler:focus,
@@ -246,6 +265,12 @@ a {
 
   .navbar-nav .nav-link::after {
     display: none;
+  }
+
+  .blog-nav-btn {
+    margin-left: 0;
+    font-size: 1.1rem;
+    padding: 0.3rem 1.2rem;
   }
 
   .nav-mobile-btn {
