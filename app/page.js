@@ -24,7 +24,7 @@ export default function Home() {
   const [typedText, setTypedText] = useState("");
   const [displayIndex, setDisplayIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", topic: "general", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", topic: "general", message: "", company: "" });
   const [status, setStatus] = useState({ loading: false, error: "", success: "" });
 
   // Refs for VariableProximity sections
@@ -354,7 +354,7 @@ export default function Home() {
       }
 
       setStatus({ loading: false, error: "", success: "✓  Message sent! I'll get back to you soon!" });
-      setForm({ name: "", email: "", topic: "general", message: "" });
+      setForm({ name: "", email: "", topic: "general", message: "", company: "" });
 
       // Auto-dismiss success message after 5 seconds
       setTimeout(() => {
@@ -697,6 +697,17 @@ export default function Home() {
             <div className="col-lg-6 reveal from-left reveal-delay-1">
               <div className="contact-form-card">
                 <form onSubmit={handleSubmit}>
+                  {/* Honeypot field - hidden from genuine users, traps automated spam bots */}
+                  <div style={{ display: "none", position: "absolute", left: "-9999px" }} aria-hidden="true">
+                    <input
+                      type="text"
+                      name="company"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={form.company || ""}
+                      onChange={handleChange}
+                    />
+                  </div>
                   <div className="row g-3 mb-3">
                     <div className="col-md-6">
                       <input
