@@ -11,6 +11,7 @@ import { FaAndroid } from "react-icons/fa";
 import VariableProximity from './components/VariableProximity';
 import TechStack from './components/TechStack';
 import BlogNavButton from './components/BlogNavButton';
+import Preloader from './components/Preloader';
 
 export default function Home() {
   const [activeSection, setActiveSection] = useState("home");
@@ -373,6 +374,7 @@ export default function Home() {
 
   return (
     <>
+      <Preloader />
       {/* Navbar */}
       <nav className={`navbar navbar-expand-lg navbar-dark fixed-top custom-navbar ${scrolled ? 'scrolled' : ''}`}>
         <div className="container">
