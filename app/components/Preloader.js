@@ -3,19 +3,21 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import "./Preloader.css";
 
+const GREETINGS = [
+  "Hello",
+  "Bonjour",
+  "Ayubowan",
+  "Ciao",
+  "Ayesh Madhuranga",
+];
+
 export default function Preloader({ onComplete }) {
+  const [index, setIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [isExiting, setIsExiting] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
-  const [statusLog, setStatusLog] = useState('sys.boot("ayesh.core")');
   const timerRef = useRef(null);
 
-  // SVG Gauge calculations
-  const radius = 58;
-  const circumference = 2 * Math.PI * radius;
-  const strokeDashoffset = circumference - (circumference * progress) / 100;
-
-  // Complete and exit handler
   const handleFinish = useCallback(() => {
     setIsExiting(true);
     document.body.style.overflow = "";
@@ -23,76 +25,49 @@ export default function Preloader({ onComplete }) {
     const exitTimer = setTimeout(() => {
       setIsFinished(true);
       if (onComplete) onComplete();
-    }, 850);
+    }, 800);
 
     return () => clearTimeout(exitTimer);
   }, [onComplete]);
 
-  // Handle immediate skip
-  const handleSkip = useCallback(() => {
-    if (timerRef.current) clearInterval(timerRef.current);
-    setProgress(100);
-    setStatusLog("system ready. welcome!");
-    handleFinish();
-  }, [handleFinish]);
-
   useEffect(() => {
-    // Lock scroll while preloader is active
+    // Lock scroll during loading
     document.body.style.overflow = "hidden";
 
-    // Progress counter with variable speed for realistic tech feel
-    let currentProgress = 0;
-
+    // Progress counter
+    let current = 0;
     timerRef.current = setInterval(() => {
-      let increment = 1;
-      if (currentProgress < 25) {
-        increment = Math.floor(Math.random() * 4) + 2; // 2-5
-      } else if (currentProgress < 65) {
-        increment = Math.floor(Math.random() * 3) + 1; // 1-3
-      } else if (currentProgress < 90) {
-        increment = Math.floor(Math.random() * 4) + 2; // 2-5
-      } else {
-        increment = Math.floor(Math.random() * 3) + 2; // 2-4
-      }
-
-      currentProgress = Math.min(currentProgress + increment, 100);
-      setProgress(currentProgress);
-
-      // Update terminal status text based on progress milestone
-      if (currentProgress >= 90) {
-        setStatusLog("system ready. welcome!");
-      } else if (currentProgress >= 65) {
-        setStatusLog("mounting cloud & AI components...");
-      } else if (currentProgress >= 30) {
-        setStatusLog("loading projects, skills & visual assets...");
-      } else {
-        setStatusLog('sys.boot("ayesh.core")');
-      }
-
-      // When reaching 100%
-      if (currentProgress >= 100) {
+      current += Math.floor(Math.random() * 4) + 2;
+      if (current >= 100) {
+        current = 100;
         clearInterval(timerRef.current);
-        const finishTimeout = setTimeout(() => {
-          handleFinish();
-        }, 300);
-        return () => clearTimeout(finishTimeout);
+        setProgress(100);
+        setTimeout(handleFinish, 200);
+      } else {
+        setProgress(current);
       }
-    }, 28);
+    }, 24);
 
-    // Keyboard listener (Escape skips)
+    // Greetings word cycle
+    const wordInterval = setInterval(() => {
+      setIndex((prev) => (prev + 1 < GREETINGS.length ? prev + 1 : prev));
+    }, 280);
+
+    // Escape or click anywhere skips immediately
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {
-        handleSkip();
+        handleFinish();
       }
     };
     window.addEventListener("keydown", handleKeyDown);
 
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
+      clearInterval(wordInterval);
       window.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "";
     };
-  }, [handleFinish, handleSkip]);
+  }, [handleFinish]);
 
   if (isFinished) {
     return null;
@@ -100,76 +75,43 @@ export default function Preloader({ onComplete }) {
 
   return (
     <div
-      className={`preloader-overlay ${isExiting ? "preloader-exiting" : ""}`}
-      onClick={handleSkip}
-      role="progressbar"
-      aria-valuenow={progress}
-      aria-valuemin={0}
-      aria-valuemax={100}
-      aria-label="Loading portfolio"
+      className={`preloader-root ${isExiting ? "is-exiting" : ""}`}
+      onClick={handleFinish}
+      aria-hidden="true"
     >
-      <div className="preloader-container" onClick={(e) => e.stopPropagation()}>
-        {/* Emblem with SVG Circular Track */}
-        <div className="preloader-emblem-wrap preloader-pulse">
-          <svg className="preloader-svg-gauge" viewBox="0 0 140 140">
-            <circle
-              className="preloader-gauge-bg"
-              cx="70"
-              cy="70"
-              r={radius}
-            />
-            <circle
-              className="preloader-gauge-fill"
-              cx="70"
-              cy="70"
-              r={radius}
-              style={{
-                strokeDasharray: circumference,
-                strokeDashoffset: strokeDashoffset,
-              }}
-            />
-          </svg>
-          <div className="preloader-emblem-text">
-            <span className="preloader-bracket">&lt;</span>
-            <span className="preloader-initials">AM</span>
-            <span className="preloader-bracket">/&gt;</span>
-          </div>
-        </div>
+      <div className="preloader-ambient-glow" />
 
-        {/* Numeric Percentage Counter */}
-        <div className="preloader-counter-wrap">
-          <span className="preloader-counter">
-            {progress.toString().padStart(2, "0")}
-          </span>
-          <span className="preloader-percent-symbol">%</span>
+      {/* Top Bar */}
+      <div className="preloader-top-bar">
+        <span>Ayesh Madhuranga</span>
+        <div className="preloader-status">
+          <span className="preloader-status-dot"></span>
+          <span>Available for work</span>
         </div>
+      </div>
 
-        {/* Gradient Progress Bar */}
-        <div className="preloader-bar-track">
+      {/* Center Typography Greeting */}
+      <div className="preloader-center-content">
+        <div className="preloader-greeting-box">
+          <span className="preloader-amber-dot"></span>
+          <h1 className="preloader-greeting-text" key={index}>
+            {GREETINGS[index]}
+          </h1>
+        </div>
+        <p className="preloader-role-tag">Software Engineer &amp; Full Stack Developer</p>
+      </div>
+
+      {/* Bottom Bar: Hairline Progress & Numeric Counter */}
+      <div className="preloader-bottom-bar">
+        <div className="preloader-progress-track">
           <div
-            className="preloader-bar-fill"
+            className="preloader-progress-fill"
             style={{ width: `${progress}%` }}
           />
         </div>
-
-        {/* Micro-Terminal Stream */}
-        <div className="preloader-terminal">
-          <div className="preloader-terminal-header">
-            <span className="preloader-dot red"></span>
-            <span className="preloader-dot yellow"></span>
-            <span className="preloader-dot green"></span>
-            <span className="preloader-terminal-title">Dev Console</span>
-          </div>
-          <div className="preloader-terminal-line">
-            <span className="preloader-prompt">&gt;</span>
-            <span>{statusLog}</span>
-            <span className="preloader-cursor"></span>
-          </div>
-        </div>
-
-        {/* Skip Hint */}
-        <div className="preloader-skip-hint" onClick={handleSkip}>
-          Click anywhere or press [Esc] to skip
+        <div className="preloader-counter-container">
+          <span className="preloader-counter-num">{progress}</span>
+          <span className="preloader-counter-percent">%</span>
         </div>
       </div>
     </div>
