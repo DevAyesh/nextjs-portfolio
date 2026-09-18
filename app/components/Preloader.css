@@ -1,0 +1,282 @@
+/* ==========================================================================
+   Creative Developer Preloader Styles
+   Palette: #05050a (Deep Obsidian), #FFB343 (Warm Amber), #ffffff (White)
+   ========================================================================== */
+
+.preloader-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  background-color: #05050a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  user-select: none;
+  transition: transform 0.85s cubic-bezier(0.77, 0, 0.175, 1),
+              opacity 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+  will-change: transform, opacity;
+}
+
+/* Background Cyber Grid & Radial Glow */
+.preloader-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(circle at center, rgba(255, 179, 67, 0.14) 0%, transparent 65%),
+    linear-gradient(rgba(255, 179, 67, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 179, 67, 0.03) 1px, transparent 1px);
+  background-size: 100% 100%, 40px 40px, 40px 40px;
+  pointer-events: none;
+}
+
+/* Exit Transition States */
+.preloader-overlay.preloader-exiting {
+  transform: translateY(-100%);
+  opacity: 0.98;
+}
+
+.preloader-overlay.preloader-hidden {
+  display: none !important;
+}
+
+/* Center Container */
+.preloader-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 420px;
+  width: 90%;
+  padding: 30px;
+  text-align: center;
+  z-index: 2;
+}
+
+/* Emblem Wrapper */
+.preloader-emblem-wrap {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 26px;
+}
+
+/* SVG Gauge Ring */
+.preloader-svg-gauge {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.preloader-gauge-bg {
+  fill: none;
+  stroke: rgba(255, 179, 67, 0.12);
+  stroke-width: 4;
+}
+
+.preloader-gauge-fill {
+  fill: none;
+  stroke: #FFB343;
+  stroke-width: 4;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.12s linear;
+  filter: drop-shadow(0 0 10px rgba(255, 179, 67, 0.65));
+}
+
+/* Center Monogram */
+.preloader-emblem-text {
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 800;
+  font-size: 1.65rem;
+  letter-spacing: -0.5px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: 0 0 16px rgba(255, 179, 67, 0.45);
+}
+
+.preloader-bracket {
+  color: #FFB343;
+  transition: transform 0.3s ease;
+}
+
+.preloader-overlay:hover .preloader-bracket {
+  transform: scale(1.15);
+}
+
+.preloader-initials {
+  margin: 0 4px;
+  background: linear-gradient(135deg, #ffffff 40%, #FFB343 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Progress Counter */
+.preloader-counter-wrap {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.preloader-counter {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 2.7rem;
+  font-weight: 800;
+  color: #FFB343;
+  line-height: 1;
+  text-shadow: 0 0 20px rgba(255, 179, 67, 0.5);
+  font-variant-numeric: tabular-nums;
+  min-width: 95px;
+}
+
+.preloader-percent-symbol {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.6);
+  margin-left: 2px;
+}
+
+/* Progress Track & Bar */
+.preloader-bar-track {
+  width: 100%;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.preloader-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #FF9500, #FFB343, #FFD580);
+  border-radius: 6px;
+  transition: width 0.12s linear;
+  box-shadow: 0 0 12px rgba(255, 179, 67, 0.8);
+}
+
+/* Terminal Readout Window */
+.preloader-terminal {
+  width: 100%;
+  background: rgba(10, 10, 20, 0.8);
+  border: 1px solid rgba(255, 179, 67, 0.22);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.78rem;
+  text-align: left;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.preloader-terminal-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.preloader-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.preloader-dot.red { background: #ff5f56; }
+.preloader-dot.yellow { background: #ffbd2e; }
+.preloader-dot.green { background: #27c93f; }
+
+.preloader-terminal-title {
+  margin-left: auto;
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.preloader-terminal-line {
+  color: rgba(255, 255, 255, 0.8);
+  margin: 3px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 1.15rem;
+  word-break: break-all;
+}
+
+.preloader-prompt {
+  color: #FFB343;
+  font-weight: 700;
+}
+
+.preloader-cursor {
+  display: inline-block;
+  width: 6px;
+  height: 13px;
+  background-color: #FFB343;
+  margin-left: 2px;
+  animation: preloaderBlink 0.8s infinite alternate ease-in-out;
+}
+
+/* Skip Hint */
+.preloader-skip-hint {
+  margin-top: 18px;
+  font-family: "Inter", sans-serif;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.35);
+  letter-spacing: 0.5px;
+  transition: color 0.2s ease;
+  cursor: pointer;
+}
+
+.preloader-skip-hint:hover {
+  color: #FFB343;
+}
+
+/* Keyframes */
+@keyframes preloaderBlink {
+  0% { opacity: 0.15; }
+  100% { opacity: 1; }
+}
+
+@keyframes preloaderPulse {
+  0%, 100% { transform: scale(1); opacity: 0.92; }
+  50% { transform: scale(1.04); opacity: 1; }
+}
+
+.preloader-pulse {
+  animation: preloaderPulse 2.2s infinite ease-in-out;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 576px) {
+  .preloader-emblem-wrap {
+    width: 110px;
+    height: 110px;
+    margin-bottom: 20px;
+  }
+  .preloader-emblem-text {
+    font-size: 1.35rem;
+  }
+  .preloader-counter {
+    font-size: 2.2rem;
+    min-width: 80px;
+  }
+  .preloader-terminal {
+    font-size: 0.72rem;
+    padding: 8px 12px;
+  }
+}
