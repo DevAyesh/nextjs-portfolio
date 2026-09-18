@@ -425,11 +425,11 @@ export default function Home() {
 
         {/* Social Sidebar (Desktop) */}
         <div className="social-links position-absolute start-0 top-50 translate-middle-y d-none d-lg-flex flex-column gap-4 ms-5">
-          <a href="https://github.com/DevAyesh" className="social-icon fs-4" target="_blank" rel="noopener noreferrer"><i className="fab fa-github"></i></a>
-          <a href="https://www.linkedin.com/in/ayesh-madhuranga-nawarathna-4b2a33217" className="social-icon fs-4" target="_blank" rel="noopener noreferrer"><i className="fab fa-linkedin"></i></a>
-          <a href="https://medium.com/@amnlkk2001" className="social-icon fs-4" target="_blank" rel="noopener noreferrer"><i className="fab fa-medium-m"></i></a>
-          <a href="https://stackoverflow.com" className="social-icon fs-4" target="_blank" rel="noopener noreferrer"><i className="fab fa-stack-overflow"></i></a>
-          <a href="https://instagram.com" className="social-icon fs-4" target="_blank" rel="noopener noreferrer"><i className="fab fa-instagram"></i></a>
+          <a href="https://github.com/DevAyesh" className="social-icon fs-4" target="_blank" rel="noopener noreferrer" aria-label="Ayesh Madhuranga GitHub Profile"><i className="fab fa-github"></i></a>
+          <a href="https://www.linkedin.com/in/ayesh-madhuranga-nawarathna-4b2a33217" className="social-icon fs-4" target="_blank" rel="noopener noreferrer" aria-label="Ayesh Madhuranga LinkedIn Profile"><i className="fab fa-linkedin"></i></a>
+          <a href="https://medium.com/@amnlkk2001" className="social-icon fs-4" target="_blank" rel="noopener noreferrer" aria-label="Ayesh Madhuranga Medium Articles"><i className="fab fa-medium-m"></i></a>
+          <a href="https://stackoverflow.com" className="social-icon fs-4" target="_blank" rel="noopener noreferrer" aria-label="Ayesh Madhuranga Stack Overflow Profile"><i className="fab fa-stack-overflow"></i></a>
+          <a href="https://instagram.com" className="social-icon fs-4" target="_blank" rel="noopener noreferrer" aria-label="Ayesh Madhuranga Instagram Profile"><i className="fab fa-instagram"></i></a>
         </div>
 
         <div className="container">
@@ -456,11 +456,11 @@ export default function Home() {
 
                 {/* Mobile Social */}
                 <div className="d-flex gap-4 mt-4 justify-content-center d-lg-none">
-                  <a href="https://github.com/DevAyesh" className="social-icon fs-4" target="_blank" rel="noopener noreferrer"><i className="fab fa-github"></i></a>
-                  <a href="https://www.linkedin.com/in/ayesh-madhuranga-nawarathna-4b2a33217" className="social-icon fs-4" target="_blank" rel="noopener noreferrer"><i className="fab fa-linkedin"></i></a>
-                  <a href="https://medium.com/@amnlkk2001" className="social-icon fs-4" target="_blank" rel="noopener noreferrer"><i className="fab fa-medium-m"></i></a>
-                  <a href="https://stackoverflow.com" className="social-icon fs-4" target="_blank" rel="noopener noreferrer"><i className="fab fa-stack-overflow"></i></a>
-                  <a href="https://instagram.com" className="social-icon fs-4" target="_blank" rel="noopener noreferrer"><i className="fab fa-instagram"></i></a>
+                  <a href="https://github.com/DevAyesh" className="social-icon fs-4" target="_blank" rel="noopener noreferrer" aria-label="Ayesh Madhuranga GitHub Profile"><i className="fab fa-github"></i></a>
+                  <a href="https://www.linkedin.com/in/ayesh-madhuranga-nawarathna-4b2a33217" className="social-icon fs-4" target="_blank" rel="noopener noreferrer" aria-label="Ayesh Madhuranga LinkedIn Profile"><i className="fab fa-linkedin"></i></a>
+                  <a href="https://medium.com/@amnlkk2001" className="social-icon fs-4" target="_blank" rel="noopener noreferrer" aria-label="Ayesh Madhuranga Medium Articles"><i className="fab fa-medium-m"></i></a>
+                  <a href="https://stackoverflow.com" className="social-icon fs-4" target="_blank" rel="noopener noreferrer" aria-label="Ayesh Madhuranga Stack Overflow Profile"><i className="fab fa-stack-overflow"></i></a>
+                  <a href="https://instagram.com" className="social-icon fs-4" target="_blank" rel="noopener noreferrer" aria-label="Ayesh Madhuranga Instagram Profile"><i className="fab fa-instagram"></i></a>
                 </div>
               </div>
             </div>
@@ -469,7 +469,7 @@ export default function Home() {
               <div className="hero-image">
                 <img
                   src="/images/profile3.png"
-                  alt="Ayesh Madhuranga"
+                  alt="Ayesh Madhuranga - Software Engineer and Full Stack Developer"
                   className="img-fluid hero-img"
                   style={{ maxWidth: '400px' }}
                 />
@@ -499,7 +499,7 @@ export default function Home() {
               <div className="about-profile-card">
                 <img
                   src="/images/profile.png"
-                  alt="Profile"
+                  alt="Ayesh Madhuranga - Full Stack Developer"
                   className="about-profile-img"
                 />
               </div>
